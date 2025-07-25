@@ -25,7 +25,7 @@ Create the following structure:
 
 Initialize React app with TypeScript, install essential dependencies (React Router, Axios for API calls, basic UI framework like Material-UI or Tailwind CSS).
 
-Initialize FastAPI backend with essential dependencies (FastAPI, SQLAlchemy, Pydantic, psycopg2 for PostgreSQL).
+Initialize FastAPI backend using UV with essential dependencies (FastAPI, SQLAlchemy, Pydantic, psycopg2 for PostgreSQL).
 
 Configure CORS for local development between frontend and backend.
 ```
