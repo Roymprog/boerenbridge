@@ -126,7 +126,7 @@ const MainMenu: React.FC = () => {
               textTransform: 'none',
             }}
           >
-            🧪 Test Game State (Dev)
+            🧪 Test Game State & Bidding (Dev)
           </Button>
         </Stack>
 

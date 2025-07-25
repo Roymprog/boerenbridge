@@ -21,6 +21,7 @@ import {
   useGameProgress,
   useGameValidation,
 } from '../hooks';
+import { BiddingPhase } from './index';
 
 const GameStateTester: React.FC = () => {
   const { state, initializeGame, submitBids, submitTricks, nextRound, resetGame } = useGame();
@@ -169,6 +170,19 @@ const GameStateTester: React.FC = () => {
                   Total bids: {Object.values(bids).reduce((sum, bid) => sum + bid, 0)}
                 </Typography>
               )}
+            </Box>
+          )}
+
+          {/* BiddingPhase Component Test */}
+          {gamePhase.isBidding && (
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="subtitle2" gutterBottom>
+                🎯 BiddingPhase Component Test
+              </Typography>
+              <Alert severity="info" sx={{ mb: 2 }}>
+                This is the actual BiddingPhase component that will be used in the game:
+              </Alert>
+              <BiddingPhase />
             </Box>
           )}
 

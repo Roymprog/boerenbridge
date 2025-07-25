@@ -4,6 +4,7 @@ export { default as GameSetup } from './GameSetup';
 export { default as GameHistory } from './GameHistory';
 export { default as PlayerSelection } from './PlayerSelection';
 export { default as RoundConfiguration } from './RoundConfiguration';
+export { default as BiddingPhase } from './BiddingPhase';
 export { default as GameStateDebug } from './GameStateDebug';
 export { default as GameStateTester } from './GameStateTester';
 

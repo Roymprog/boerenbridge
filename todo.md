@@ -126,23 +126,23 @@
 - [x] Add state persistence during game session
 - [x] Test state management with various scenarios
 
-### Step 8: Bidding Phase Component ⬜
-- [ ] Create `BiddingPhase` component
-- [ ] Implement player bid inputs:
-  - [ ] Order players clockwise from left of dealer
-  - [ ] Create filterable dropdown for bid values (0 to current cards)
-  - [ ] Allow typing numeric values
-- [ ] Add bid validation logic:
-  - [ ] Validate last bidder's bid (total bids ≠ cards in round)
-  - [ ] Highlight invalid options in red
-  - [ ] Prevent selection of invalid bids
-- [ ] Display current round information:
-  - [ ] Round number and card count
-  - [ ] Current dealer indication
-  - [ ] Player turn order
-- [ ] Add form submission and validation
-- [ ] Connect to game state management
-- [ ] Test with different player counts and scenarios
+### Step 8: Bidding Phase Component ✅
+- [x] Create `BiddingPhase` component
+- [x] Implement player bid inputs:
+  - [x] Order players clockwise from left of dealer
+  - [x] Create filterable dropdown for bid values (0 to current cards)
+  - [x] Allow typing numeric values
+- [x] Add bid validation logic:
+  - [x] Validate last bidder's bid (total bids ≠ cards in round)
+  - [x] Highlight invalid options in red
+  - [x] Prevent selection of invalid bids
+- [x] Display current round information:
+  - [x] Round number and card count
+  - [x] Current dealer indication
+  - [x] Player turn order
+- [x] Add form submission and validation
+- [x] Connect to game state management
+- [x] Test with different player counts and scenarios
 
 ### Step 9: Tricks Input Component ⬜
 - [ ] Create `TricksInput` component
