@@ -21,7 +21,7 @@ import {
   useGameProgress,
   useGameValidation,
 } from '../hooks';
-import { BiddingPhase } from './index';
+import { BiddingPhase, TricksInput } from './index';
 
 const GameStateTester: React.FC = () => {
   const { state, initializeGame, submitBids, submitTricks, nextRound, resetGame } = useGame();
@@ -222,6 +222,19 @@ const GameStateTester: React.FC = () => {
                   Total tricks: {Object.values(tricks).reduce((sum, t) => sum + t, 0)} / {currentRound.cardsCount}
                 </Typography>
               )}
+            </Box>
+          )}
+
+          {/* TricksInput Component Test */}
+          {gamePhase.isTricks && (
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="subtitle2" gutterBottom>
+                🏆 TricksInput Component Test
+              </Typography>
+              <Alert severity="info" sx={{ mb: 2 }}>
+                This is the actual TricksInput component that will be used in the game:
+              </Alert>
+              <TricksInput />
             </Box>
           )}
 

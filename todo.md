@@ -144,36 +144,36 @@
 - [x] Connect to game state management
 - [x] Test with different player counts and scenarios
 
-### Step 9: Tricks Input Component ⬜
-- [ ] Create `TricksInput` component
-- [ ] Implement tricks input fields for each player
-- [ ] Add running total calculation:
-  - [ ] Display current sum of entered tricks
-  - [ ] Update total in real-time as values change
-- [ ] Implement validation:
-  - [ ] Ensure total tricks equals cards in current round
-  - [ ] Display total in red when incorrect
-  - [ ] Prevent proceeding until validation passes
-- [ ] Add clear visual feedback for validation state
-- [ ] Connect to game state for data persistence
-- [ ] Add smooth transition from bidding phase
-- [ ] Test validation with various input combinations
+### Step 9: Tricks Input Component ✅
+- [x] Create `TricksInput` component
+- [x] Implement tricks input fields for each player
+- [x] Add running total calculation:
+  - [x] Display current sum of entered tricks
+  - [x] Update total in real-time as values change
+- [x] Implement validation:
+  - [x] Ensure total tricks equals cards in current round
+  - [x] Display total in red when incorrect
+  - [x] Prevent proceeding until validation passes
+- [x] Add clear visual feedback for validation state
+- [x] Connect to game state for data persistence
+- [x] Add smooth transition from bidding phase
+- [x] Test validation with various input combinations
 
-### Step 10: Scoring System ⬜
-- [ ] Create scoring utility functions:
-  - [ ] Calculate correct bid score: 10 + (2 * tricks_won)
-  - [ ] Calculate incorrect bid score: -2 * abs(bid - tricks_won)
-  - [ ] Calculate running total for each player
-- [ ] Integrate scoring with round completion:
-  - [ ] Automatically calculate scores when round data is submitted
-  - [ ] Update running totals for all players
-  - [ ] Save round data to backend
-- [ ] Add comprehensive unit tests for scoring logic:
-  - [ ] Test correct bid scenarios
-  - [ ] Test incorrect bid scenarios
-  - [ ] Test edge cases (zero bids, maximum bids)
-- [ ] Connect scoring to game state management
-- [ ] Test scoring integration with round flow
+### Step 10: Scoring System ✅
+- [x] Create scoring utility functions:
+  - [x] Calculate correct bid score: 10 + (2 * tricks_won)
+  - [x] Calculate incorrect bid score: -2 * abs(bid - tricks_won)
+  - [x] Calculate running total for each player
+- [x] Integrate scoring with round completion:
+  - [x] Automatically calculate scores when round data is submitted
+  - [x] Update running totals for all players
+  - [x] Save round data to backend
+- [x] Add comprehensive unit tests for scoring logic:
+  - [x] Test correct bid scenarios
+  - [x] Test incorrect bid scenarios
+  - [x] Test edge cases (zero bids, maximum bids)
+- [x] Connect scoring to game state management
+- [x] Test scoring integration with round flow
 
 ---
 
