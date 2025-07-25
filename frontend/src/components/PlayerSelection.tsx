@@ -22,6 +22,7 @@ import {
   Group as GroupIcon
 } from '@mui/icons-material';
 import { playerAPI } from '../services/api';
+import { useError } from '../contexts';
 
 interface Player {
   id: number;
@@ -41,9 +42,9 @@ const PlayerSelection: React.FC<PlayerSelectionProps> = ({
   onValidationChange,
   initialPlayers = []
 }) => {
+  const { showError, showSuccess } = useError();
   const [availablePlayers, setAvailablePlayers] = useState<Player[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPlayers, setFilteredPlayers] = useState<string[]>([]);
 
@@ -51,11 +52,10 @@ const PlayerSelection: React.FC<PlayerSelectionProps> = ({
   const fetchPlayers = async () => {
     try {
       setLoading(true);
-      setError(null);
       const response = await playerAPI.getAll();
       setAvailablePlayers(response.data);
     } catch (err: any) {
-      setError('Fout bij ophalen van spelers: ' + (err.response?.data?.detail || err.message));
+      showError('Fout bij ophalen van spelers: ' + (err.response?.data?.detail || err.message));
     } finally {
       setLoading(false);
     }
@@ -98,12 +98,19 @@ const PlayerSelection: React.FC<PlayerSelectionProps> = ({
     if (!playerName.trim()) return;
     
     const trimmedName = playerName.trim();
-    if (selectedPlayers.includes(trimmedName)) return;
-    if (selectedPlayers.length >= 10) return;
+    if (selectedPlayers.includes(trimmedName)) {
+      showError(`${trimmedName} is al toegevoegd`);
+      return;
+    }
+    if (selectedPlayers.length >= 10) {
+      showError('Maximum van 10 spelers bereikt');
+      return;
+    }
 
     const newPlayers = [...selectedPlayers, trimmedName];
     onPlayersChange(newPlayers);
     setSearchTerm('');
+    showSuccess(`${trimmedName} toegevoegd`);
   };
 
   const handleRemovePlayer = (playerName: string) => {
@@ -166,12 +173,6 @@ const PlayerSelection: React.FC<PlayerSelectionProps> = ({
           Spelers Selecteren
         </Typography>
       </Box>
-
-      {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {error}
-        </Alert>
-      )}
 
       <Box sx={{ mb: 3 }}>
         <Autocomplete

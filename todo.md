@@ -240,69 +240,69 @@
 - [x] Test game completion flow
 - [x] Verify data persistence
 
-### Step 14: Game History List Component ⬜
-- [ ] Create `GameHistory` component
-- [ ] Implement game list display:
-  - [ ] Date column
-  - [ ] Player names column
-  - [ ] Final scores for each player
-  - [ ] Winner highlight
-- [ ] Add filtering functionality:
-  - [ ] Multi-select dropdown for players
-  - [ ] Date range inputs (start/end)
-  - [ ] Winner's score range slider/input
-- [ ] Implement sorting options:
-  - [ ] By date (newest/oldest)
-  - [ ] By winner's score (high/low)
-- [ ] Connect to backend API:
-  - [ ] Fetch games with filters/sorting
-  - [ ] Handle pagination if needed
-  - [ ] Proper error handling
-- [ ] Add clickable rows for detailed view
-- [ ] Style for desktop-first design
-- [ ] Test filtering and sorting combinations
+### Step 14: Game History List Component ✅
+- [x] Create `GameHistory` component
+- [x] Implement game list display:
+  - [x] Date column
+  - [x] Player names column
+  - [x] Final scores for each player
+  - [x] Winner highlight
+- [x] Add filtering functionality:
+  - [x] Multi-select dropdown for players
+  - [x] Date range inputs (start/end)
+  - [x] Winner's score range slider/input
+- [x] Implement sorting options:
+  - [x] By date (newest/oldest)
+  - [x] By winner's score (high/low)
+- [x] Connect to backend API:
+  - [x] Fetch games with filters/sorting
+  - [x] Handle pagination if needed
+  - [x] Proper error handling
+- [x] Add clickable rows for detailed view
+- [x] Style for desktop-first design
+- [x] Test filtering and sorting combinations
 
-### Step 15: Game History Detail Component ⬜
-- [ ] Create `GameDetail` component
-- [ ] Implement read-only scoreboard:
-  - [ ] Reuse scoreboard component logic
-  - [ ] Display complete historical round data
-  - [ ] Show final results prominently
-- [ ] Add navigation:
-  - [ ] Back to history list
-  - [ ] Breadcrumb navigation
-- [ ] Ensure proper data formatting:
-  - [ ] Handle games with different player counts
-  - [ ] Display historical data accurately
-  - [ ] Maintain visual consistency
-- [ ] Connect to game detail API endpoint
-- [ ] Test with various historical games
-- [ ] Verify read-only functionality works correctly
+### Step 15: Game History Detail Component ✅
+- [x] Create `GameDetail` component
+- [x] Implement read-only scoreboard:
+  - [x] Reuse scoreboard component logic
+  - [x] Display complete historical round data
+  - [x] Show final results prominently
+- [x] Add navigation:
+  - [x] Back to history list
+  - [x] Breadcrumb navigation
+- [x] Ensure proper data formatting:
+  - [x] Handle games with different player counts
+  - [x] Display historical data accurately
+  - [x] Maintain visual consistency
+- [x] Connect to game detail API endpoint
+- [x] Test with various historical games
+- [x] Verify read-only functionality works correctly
 
 ---
 
 ## Phase 6: Polish & Optimization
 
-### Step 16: Error Handling & User Experience ⬜
-- [ ] Implement global error handling:
-  - [ ] React error boundary component
-  - [ ] Global error context/state
-  - [ ] User-friendly error messages
-- [ ] Add loading states:
-  - [ ] API call loading indicators
-  - [ ] Skeleton loaders for content
-  - [ ] Progress indicators for long operations
-- [ ] Improve user feedback:
-  - [ ] Success messages for actions
-  - [ ] Confirmation dialogs for destructive actions
-  - [ ] Input validation feedback
-  - [ ] Toast notifications for important events
-- [ ] Enhance responsive design:
-  - [ ] Ensure desktop-first approach
-  - [ ] Test on various screen sizes
-  - [ ] Improve mobile compatibility where applicable
-- [ ] Add keyboard navigation and accessibility features
-- [ ] Test error scenarios thoroughly
+### Step 16: Error Handling & User Experience ✅
+- [x] Implement global error handling:
+  - [x] React error boundary component
+  - [x] Global error context/state
+  - [x] User-friendly error messages
+- [x] Add loading states:
+  - [x] API call loading indicators
+  - [x] Skeleton loaders for content
+  - [x] Progress indicators for long operations
+- [x] Improve user feedback:
+  - [x] Success messages for actions
+  - [x] Confirmation dialogs for destructive actions
+  - [x] Input validation feedback
+  - [x] Toast notifications for important events
+- [x] Enhance responsive design:
+  - [x] Ensure desktop-first approach
+  - [x] Test on various screen sizes
+  - [x] Improve mobile compatibility where applicable
+- [x] Add keyboard navigation and accessibility features
+- [x] Test error scenarios thoroughly
 
 ### Step 17: Performance Optimization & Testing ⬜
 - [ ] Implement React performance optimizations:

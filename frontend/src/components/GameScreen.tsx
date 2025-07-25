@@ -8,7 +8,6 @@ import {
   Button,
   Card,
   CardContent,
-  Alert,
   LinearProgress,
   CircularProgress,
   Stepper,
@@ -23,8 +22,8 @@ import {
   NavigateNext as NextIcon,
   Casino as DealerIcon,
 } from '@mui/icons-material';
-import { useGame } from '../contexts';
-import { useCurrentRound, useGameProgress, useGameScores } from '../hooks';
+import { useGame, useError, useConfirmation } from '../contexts';
+import { useCurrentRound, useGameProgress } from '../hooks';
 import { submitRound, createGame } from '../services/api';
 import BiddingPhase from './BiddingPhase';
 import TricksInput from './TricksInput';
@@ -34,11 +33,12 @@ import EndGame from './EndGame';
 const GameScreen: React.FC = () => {
   const navigate = useNavigate();
   const { state, nextRound, completeGame, resetGame } = useGame();
+  const { showError, showSuccess } = useError();
+  const { confirm } = useConfirmation();
   const { round } = useCurrentRound();
   const { isGameComplete, progress } = useGameProgress();
   
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [gameId, setGameId] = useState<string | null>(state.gameId);
   const [submittingRound, setSubmittingRound] = useState(false);
 
@@ -47,14 +47,13 @@ const GameScreen: React.FC = () => {
     const initializeBackendGame = async () => {
       if (!gameId && state.players.length > 0 && state.isGameActive) {
         try {
-          setLoading(true);
+                  setLoading(true);
           const playerNames = state.players.map(p => p.name);
           const gameData = await createGame(playerNames, state.maxCards);
           setGameId(gameData.id);
-          setError(null);
         } catch (err) {
           console.error('Failed to create game in backend:', err);
-          setError('Failed to initialize game. You can continue playing, but data won\'t be saved.');
+          showError('Failed to initialize game. You can continue playing, but data won\'t be saved.');
         } finally {
           setLoading(false);
         }
@@ -62,14 +61,13 @@ const GameScreen: React.FC = () => {
     };
 
     initializeBackendGame();
-  }, [gameId, state.players, state.maxCards, state.isGameActive]);
+  }, [gameId, state.players, state.maxCards, state.isGameActive, showError]);
 
   // Handle round completion and data persistence
   const handleRoundComplete = async () => {
     if (!round || !round.isComplete) return;
 
     setSubmittingRound(true);
-    setError(null);
 
     try {
       // Submit round data to backend if we have a gameId
@@ -98,7 +96,7 @@ const GameScreen: React.FC = () => {
       }
     } catch (err) {
       console.error('Failed to submit round data:', err);
-      setError('Failed to save round data. You can continue playing, but this round won\'t be saved.');
+      showError('Failed to save round data. You can continue playing, but this round won\'t be saved.');
       
       // Still progress the game even if backend submission fails
       if (state.currentRound >= state.totalRounds) {
@@ -116,15 +114,35 @@ const GameScreen: React.FC = () => {
   };
 
   const handleNewGame = () => {
-    resetGame();
-    setGameId(null);
-    navigate('/new-game');
+    confirm({
+      title: 'Nieuw spel starten',
+      message: 'Weet je zeker dat je een nieuw spel wilt starten? Het huidige spel gaat verloren.',
+      severity: 'warning',
+      confirmText: 'Nieuw Spel',
+      confirmColor: 'warning',
+      onConfirm: () => {
+        resetGame();
+        setGameId(null);
+        navigate('/new-game');
+        showSuccess('Nieuw spel gestart');
+      }
+    });
   };
 
   const handleMainMenu = () => {
-    resetGame();
-    setGameId(null);
-    navigate('/');
+    confirm({
+      title: 'Naar hoofdmenu',
+      message: 'Weet je zeker dat je naar het hoofdmenu wilt? Het huidige spel gaat verloren.',
+      severity: 'warning',
+      confirmText: 'Hoofdmenu',
+      confirmColor: 'warning',
+      onConfirm: () => {
+        resetGame();
+        setGameId(null);
+        navigate('/');
+        showSuccess('Terug naar hoofdmenu');
+      }
+    });
   };
 
   const getCurrentPhaseComponent = () => {
@@ -249,13 +267,6 @@ const GameScreen: React.FC = () => {
             Spel initialiseren...
           </Typography>
         </Box>
-      )}
-
-      {/* Error display */}
-      {error && (
-        <Alert severity="warning" sx={{ mb: 3 }} onClose={() => setError(null)}>
-          {error}
-        </Alert>
       )}
 
       {/* Game Progress */}

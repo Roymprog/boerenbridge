@@ -41,6 +41,9 @@ export const gameAPI = {
   // Get all games with optional filtering
   getAll: (params?: any) => api.get('/games', { params }),
   
+  // Get game history with filtering and pagination
+  getHistory: (filters?: any) => api.get('/games', { params: filters }),
+  
   // Submit round data
   submitRound: (gameId: string, roundData: any) =>
     api.post(`/games/${gameId}/rounds`, roundData),
@@ -68,6 +71,11 @@ export const getPlayers = async () => {
 
 export const createPlayer = async (name: string) => {
   const response = await playerAPI.create(name);
+  return response.data;
+};
+
+export const getGameHistory = async (filters?: any) => {
+  const response = await gameAPI.getHistory(filters);
   return response.data;
 };
 

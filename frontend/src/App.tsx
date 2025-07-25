@@ -4,10 +4,24 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 
 // Components
-import { MainMenu, GameSetup, GameScreen, GameHistory, GameStateTester, ScoreboardDemo } from './components';
+import { 
+  MainMenu, 
+  GameSetup, 
+  GameScreen, 
+  GameHistory, 
+  GameDetail, 
+  GameStateTester, 
+  ScoreboardDemo,
+  ErrorBoundary 
+} from './components';
 
 // Context
-import { GameProvider } from './contexts';
+import { 
+  GameProvider,
+  ErrorProvider,
+  LoadingProvider,
+  ConfirmationProvider
+} from './contexts';
 
 // Create a custom theme for the application
 const theme = createTheme({
@@ -36,7 +50,15 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: 'none', // Prevent uppercase transformation
+          textTransform: 'none',
+          fontWeight: 500,
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
         },
       },
     },
@@ -45,21 +67,30 @@ const theme = createTheme({
 
 function App() {
   return (
-    <GameProvider>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Router>
-          <Routes>
-            <Route path="/" element={<MainMenu />} />
-            <Route path="/new-game" element={<GameSetup />} />
-            <Route path="/game" element={<GameScreen />} />
-            <Route path="/history" element={<GameHistory />} />
-            <Route path="/test-game-state" element={<GameStateTester />} />
-            <Route path="/scoreboard-demo" element={<ScoreboardDemo />} />
-          </Routes>
-        </Router>
-      </ThemeProvider>
-    </GameProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <ErrorBoundary>
+        <ErrorProvider>
+          <LoadingProvider>
+            <ConfirmationProvider>
+              <GameProvider>
+                <Router>
+                  <Routes>
+                    <Route path="/" element={<MainMenu />} />
+                    <Route path="/new-game" element={<GameSetup />} />
+                    <Route path="/game" element={<GameScreen />} />
+                    <Route path="/history" element={<GameHistory />} />
+                    <Route path="/history/:gameId" element={<GameDetail />} />
+                    <Route path="/test-game-state" element={<GameStateTester />} />
+                    <Route path="/scoreboard-demo" element={<ScoreboardDemo />} />
+                  </Routes>
+                </Router>
+              </GameProvider>
+            </ConfirmationProvider>
+          </LoadingProvider>
+        </ErrorProvider>
+      </ErrorBoundary>
+    </ThemeProvider>
   );
 }
 
