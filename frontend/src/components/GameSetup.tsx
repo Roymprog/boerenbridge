@@ -12,12 +12,15 @@ import {
 } from '@mui/material';
 import { ArrowBack as ArrowBackIcon, PlayArrow as PlayArrowIcon } from '@mui/icons-material';
 import PlayerSelection from './PlayerSelection';
+import RoundConfiguration from './RoundConfiguration';
 
 const GameSetup: React.FC = () => {
   const navigate = useNavigate();
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [playerSelectionValid, setPlayerSelectionValid] = useState(false);
+  const [selectedMaxCards, setSelectedMaxCards] = useState(10);
+  const [roundConfigValid, setRoundConfigValid] = useState(false);
 
   const steps = ['Spelers Selecteren', 'Rondes Configureren', 'Spel Starten'];
 
@@ -37,12 +40,35 @@ const GameSetup: React.FC = () => {
     }
   };
 
+  const handleStartGame = async () => {
+    try {
+      // Create the game via API
+      const gameData = {
+        player_names: selectedPlayers,
+        max_cards: selectedMaxCards
+      };
+      
+      console.log('Starting game with:', gameData);
+      // TODO: Replace with actual API call when game endpoints are ready
+      // const response = await createGame(gameData);
+      // navigate(`/game/${response.id}`);
+      
+      // For now, just log the game setup
+      alert(`Spel wordt gestart!\nSpelers: ${selectedPlayers.join(', ')}\nMax kaarten: ${selectedMaxCards}\nAantal rondes: ${(selectedMaxCards * 2) - 1}`);
+    } catch (error) {
+      console.error('Error starting game:', error);
+      alert('Fout bij het starten van het spel. Probeer het opnieuw.');
+    }
+  };
+
   const isStepValid = () => {
     switch (currentStep) {
       case 0: // Player selection
         return playerSelectionValid;
       case 1: // Round configuration
-        return true; // Will be implemented later
+        return roundConfigValid;
+      case 2: // Ready to start
+        return playerSelectionValid && roundConfigValid;
       default:
         return false;
     }
@@ -85,24 +111,34 @@ const GameSetup: React.FC = () => {
           )}
           
           {currentStep === 1 && (
-            <Paper elevation={2} sx={{ p: 3, textAlign: 'center' }}>
-              <Typography variant="h6" gutterBottom>
-                Rondes Configuratie
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Deze functionaliteit wordt in de volgende stap geïmplementeerd.
-              </Typography>
-            </Paper>
+            <RoundConfiguration
+              playerCount={selectedPlayers.length}
+              selectedMaxCards={selectedMaxCards}
+              onMaxCardsChange={setSelectedMaxCards}
+              onValidationChange={setRoundConfigValid}
+            />
           )}
 
           {currentStep === 2 && (
-            <Paper elevation={2} sx={{ p: 3, textAlign: 'center' }}>
+            <Paper elevation={2} sx={{ p: 3 }}>
               <Typography variant="h6" gutterBottom>
-                Spel Starten
+                Spel Samenvatting
               </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Klaar om het spel te starten!
-              </Typography>
+              <Box sx={{ mt: 2, mb: 3 }}>
+                <Typography variant="body1" gutterBottom>
+                  <strong>Spelers ({selectedPlayers.length}):</strong> {selectedPlayers.join(', ')}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  <strong>Maximum kaarten:</strong> {selectedMaxCards}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  <strong>Aantal rondes:</strong> {(selectedMaxCards * 2) - 1}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                  Het spel verloopt van 1 kaart naar {selectedMaxCards} kaarten en weer terug naar 1 kaart. 
+                  De dealer roteert elke ronde.
+                </Typography>
+              </Box>
             </Paper>
           )}
         </Box>
@@ -123,6 +159,7 @@ const GameSetup: React.FC = () => {
                 size="large"
                 startIcon={<PlayArrowIcon />}
                 disabled={!isStepValid()}
+                onClick={handleStartGame}
               >
                 Start Spel
               </Button>

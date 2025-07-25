@@ -89,19 +89,19 @@
 - [x] Style component for desktop use
 - [x] Test with various player combinations
 
-### Step 6: Round Configuration Component ⬜
-- [ ] Create `RoundConfiguration` component
-- [ ] Implement dynamic dropdown for max cards:
-  - [ ] Calculate min value: 5
-  - [ ] Calculate max value: floor(52 / number_of_players)
-  - [ ] Populate dropdown with valid options
-- [ ] Display game information:
-  - [ ] Show calculated number of rounds: (max_cards * 2) - 1
-  - [ ] Explain round progression (1 → max → 1)
-- [ ] Add form validation and error handling
-- [ ] Create smooth transition to game screen
-- [ ] Style component consistently with app design
-- [ ] Test calculations with different player counts
+### Step 6: Round Configuration Component ✅
+- [x] Create `RoundConfiguration` component
+- [x] Implement dynamic dropdown for max cards:
+  - [x] Calculate min value: 5
+  - [x] Calculate max value: floor(52 / number_of_players)
+  - [x] Populate dropdown with valid options
+- [x] Display game information:
+  - [x] Show calculated number of rounds: (max_cards * 2) - 1
+  - [x] Explain round progression (1 → max → 1)
+- [x] Add form validation and error handling
+- [x] Create smooth transition to game screen
+- [x] Style component consistently with app design
+- [x] Test calculations with different player counts
 
 ---
 
