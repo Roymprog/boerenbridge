@@ -1,4 +1,4 @@
-# Bo### Step 1: Initial Project Structure ✅
+## Step 1: Initial Project Structure ✅
 - [x] Create monorepo directory structure (`/frontend`, `/backend`)
 - [x] Initialize React TypeScript application in `/frontend`
 - [x] Install React dependencies:
@@ -18,62 +18,40 @@
 - [x] Create basic `README.md` with setup instructions
 - [x] Test basic frontend-backend connectionping Web Application - Implementation Todo Checklist
 
-## Phase 1: Project Foundation & Setup
+### Step 2: Database Schema and Models ✅
+- [x] Design PostgreSQL database schema
+- [x] Create SQLAlchemy models:
+  - [x] `Player` model (id, name, created_at)
+  - [x] `Game` model (id, created_at, max_cards, status)
+  - [x] `GamePlayer` model (game_id, player_id, position)
+  - [x] `Round` model (id, game_id, round_number, cards_count, dealer_position)
+  - [x] `RoundScore` model (id, round_id, player_id, bid, tricks_won, score, running_total)
+- [x] Create Pydantic schemas for request/response validation:
+  - [x] Player schemas
+  - [x] Game schemas
+  - [x] Round schemas
+  - [x] Score schemas
+- [x] Set up database connection configuration
+- [x] Initialize Alembic for database migrations
+- [x] Create initial migration script
+- [x] Test database connection and basic CRUD operations
 
-### Step 1: Initial Project Structure ⬜
-- [ ] Create monorepo directory structure (`/frontend`, `/backend`)
-- [ ] Initialize React TypeScript application in `/frontend`
-- [ ] Install React dependencies:
-  - [ ] React Router for navigation
-  - [ ] Axios for API calls
-  - [ ] UI framework (Material-UI or Tailwind CSS)
-  - [ ] TypeScript types for React
-- [ ] Initialize FastAPI application in `/backend`
-- [ ] Install Python dependencies:
-  - [ ] FastAPI
-  - [ ] SQLAlchemy for ORM
-  - [ ] Pydantic for validation
-  - [ ] psycopg2 for PostgreSQL
-  - [ ] python-dotenv for environment variables
-- [ ] Create `docker-compose.yml` for local developmentp
-- [ ] Configure CORS for frontend-backend communication
-- [ ] Create basic `README.md` with setup instructions
-- [ ] Test basic frontend-backend connection
-
-### Step 2: Database Schema and Models ⬜
-- [ ] Design PostgreSQL database schema
-- [ ] Create SQLAlchemy models:
-  - [ ] `Player` model (id, name, created_at)
-  - [ ] `Game` model (id, created_at, max_cards, status)
-  - [ ] `GamePlayer` model (game_id, player_id, position)
-  - [ ] `Round` model (id, game_id, round_number, cards_count, dealer_position)
-  - [ ] `RoundScore` model (id, round_id, player_id, bid, tricks_won, score, running_total)
-- [ ] Create Pydantic schemas for request/response validation:
-  - [ ] Player schemas
-  - [ ] Game schemas
-  - [ ] Round schemas
-  - [ ] Score schemas
-- [ ] Set up database connection configuration
-- [ ] Initialize Alembic for database migrations
-- [ ] Create initial migration script
-- [ ] Test database connection and basic CRUD operations
-
-### Step 3: Basic API Endpoints ⬜
-- [ ] Implement player endpoints:
-  - [ ] `GET /players` - fetch all player names
-  - [ ] `POST /players` - create new player
-- [ ] Implement game endpoints:
-  - [ ] `POST /games` - create new game
-  - [ ] `GET /games/{game_id}` - fetch game details
-  - [ ] `GET /games` - fetch games with filtering/sorting
-- [ ] Implement round endpoints:
-  - [ ] `POST /games/{game_id}/rounds` - submit round data
-  - [ ] `GET /games/{game_id}/scoreboard` - fetch current scoreboard
-- [ ] Add proper error handling and HTTP status codes
-- [ ] Add request/response validation using Pydantic
-- [ ] Create basic unit tests for each endpoint
-- [ ] Test API endpoints using FastAPI's automatic docs
-- [ ] Verify database operations work correctly
+### Step 3: Basic API Endpoints ✅
+- [x] Implement player endpoints:
+  - [x] `GET /players` - fetch all player names
+  - [x] `POST /players` - create new player
+- [x] Implement game endpoints:
+  - [x] `POST /games` - create new game
+  - [x] `GET /games/{game_id}` - fetch game details
+  - [x] `GET /games` - fetch games with filtering/sorting
+- [x] Implement round endpoints:
+  - [x] `POST /games/{game_id}/rounds` - submit round data
+  - [x] `GET /games/{game_id}/scoreboard` - fetch current scoreboard
+- [x] Add proper error handling and HTTP status codes
+- [x] Add request/response validation using Pydantic
+- [x] Create basic unit tests for each endpoint
+- [x] Test API endpoints using FastAPI's automatic docs
+- [x] Verify database operations work correctly
 
 ---
 

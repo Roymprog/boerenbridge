@@ -1,10 +1,21 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.exc import OperationalError
 from dotenv import load_dotenv
 import os
 
+from .routes import players_router, games_router
+from .database import engine
+from . import models
+
 # Load environment variables
 load_dotenv()
+
+# Create database tables
+try:
+    models.Base.metadata.create_all(bind=engine)
+except OperationalError as e:
+    print(f"Warning: Could not connect to database: {e}")
 
 app = FastAPI(
     title="Boerenbridge Scorekeeping API",
@@ -27,6 +38,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include routers
+app.include_router(players_router)
+app.include_router(games_router)
 
 @app.get("/")
 async def root():
