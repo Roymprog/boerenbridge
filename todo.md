@@ -57,19 +57,19 @@
 
 ## Phase 2: Core Frontend Components
 
-### Step 4: Main Menu Component ⬜
-- [ ] Create `MainMenu` React component
-- [ ] Set up React Router configuration
-- [ ] Create routes for:
-  - [ ] Main menu (`/`)
-  - [ ] Game setup (`/new-game`)
-  - [ ] Game history (`/history`)
-- [ ] Style main menu with two prominent buttons:
-  - [ ] "Nieuw Spel Starten" button
-  - [ ] "Historie Bekijken" button
-- [ ] Ensure desktop-first responsive design
-- [ ] Test navigation between routes
-- [ ] Add basic CSS/styling framework setup
+### Step 4: Main Menu Component ✅
+- [x] Create `MainMenu` React component
+- [x] Set up React Router configuration
+- [x] Create routes for:
+  - [x] Main menu (`/`)
+  - [x] Game setup (`/new-game`)
+  - [x] Game history (`/history`)
+- [x] Style main menu with two prominent buttons:
+  - [x] "Nieuw Spel Starten" button
+  - [x] "Historie Bekijken" button
+- [x] Ensure desktop-first responsive design
+- [x] Test navigation between routes
+- [x] Add basic CSS/styling framework setup
 
 ### Step 5: Player Selection Component ⬜
 - [ ] Create `PlayerSelection` component
