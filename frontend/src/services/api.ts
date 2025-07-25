@@ -21,8 +21,26 @@ api.interceptors.response.use(
   }
 );
 
+// API Helper Functions
+export const playerAPI = {
+  // Get all players
+  getAll: () => api.get('/players/'),
+  
+  // Create a new player
+  create: (name: string) => api.post('/players/', { name }),
+};
+
+export const gameAPI = {
+  // Create a new game
+  create: (players: string[], maxCards: number) => 
+    api.post('/games', { players, max_cards: maxCards }),
+  
+  // Get game by ID
+  getById: (gameId: number) => api.get(`/games/${gameId}`),
+  
+  // Get all games with optional filtering
+  getAll: (params?: any) => api.get('/games', { params }),
+};
+
 export { api, API_URL };
 export default api;
-
-// This ensures the file is treated as a module
-export {};

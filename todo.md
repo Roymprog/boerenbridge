@@ -71,23 +71,23 @@
 - [x] Test navigation between routes
 - [x] Add basic CSS/styling framework setup
 
-### Step 5: Player Selection Component ⬜
-- [ ] Create `PlayerSelection` component
-- [ ] Implement filterable combobox for player names:
-  - [ ] Connect to `GET /players` API endpoint
-  - [ ] Add real-time search/filtering functionality
-  - [ ] Handle both existing and new player names
-- [ ] Add players list management:
-  - [ ] Add player to game functionality
-  - [ ] Remove player from game functionality
-  - [ ] Display current selected players
-- [ ] Implement validation:
-  - [ ] Minimum 3 players required
-  - [ ] Maximum 10 players allowed
-  - [ ] Prevent duplicate players
-- [ ] Add user feedback for validation errors
-- [ ] Style component for desktop use
-- [ ] Test with various player combinations
+### Step 5: Player Selection Component ✅
+- [x] Create `PlayerSelection` component
+- [x] Implement filterable combobox for player names:
+  - [x] Connect to `GET /players` API endpoint
+  - [x] Add real-time search/filtering functionality
+  - [x] Handle both existing and new player names
+- [x] Add players list management:
+  - [x] Add player to game functionality
+  - [x] Remove player from game functionality
+  - [x] Display current selected players
+- [x] Implement validation:
+  - [x] Minimum 3 players required
+  - [x] Maximum 10 players allowed
+  - [x] Prevent duplicate players
+- [x] Add user feedback for validation errors
+- [x] Style component for desktop use
+- [x] Test with various player combinations
 
 ### Step 6: Round Configuration Component ⬜
 - [ ] Create `RoundConfiguration` component

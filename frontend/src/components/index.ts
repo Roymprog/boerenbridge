@@ -2,6 +2,7 @@
 export { default as MainMenu } from './MainMenu';
 export { default as GameSetup } from './GameSetup';
 export { default as GameHistory } from './GameHistory';
+export { default as PlayerSelection } from './PlayerSelection';
 
 // This export ensures the file is treated as a module
 export {};
