@@ -114,6 +114,20 @@ const MainMenu: React.FC = () => {
           >
             Historie Bekijken
           </Button>
+
+          {/* Temporary Development Button */}
+          <Button
+            variant="text"
+            size="small"
+            onClick={() => navigate('/test-game-state')}
+            sx={{
+              color: '#95a5a6',
+              fontSize: '0.9rem',
+              textTransform: 'none',
+            }}
+          >
+            🧪 Test Game State (Dev)
+          </Button>
         </Stack>
 
         <Box sx={{ mt: 4 }}>

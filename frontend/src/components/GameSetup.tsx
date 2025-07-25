@@ -13,9 +13,12 @@ import {
 import { ArrowBack as ArrowBackIcon, PlayArrow as PlayArrowIcon } from '@mui/icons-material';
 import PlayerSelection from './PlayerSelection';
 import RoundConfiguration from './RoundConfiguration';
+import GameStateDebug from './GameStateDebug';
+import { useGame } from '../contexts';
 
 const GameSetup: React.FC = () => {
   const navigate = useNavigate();
+  const { initializeGame } = useGame();
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [playerSelectionValid, setPlayerSelectionValid] = useState(false);
@@ -42,19 +45,20 @@ const GameSetup: React.FC = () => {
 
   const handleStartGame = async () => {
     try {
-      // Create the game via API
-      const gameData = {
-        player_names: selectedPlayers,
-        max_cards: selectedMaxCards
-      };
+      // Initialize the game using the context
+      initializeGame(selectedPlayers, selectedMaxCards);
       
-      console.log('Starting game with:', gameData);
-      // TODO: Replace with actual API call when game endpoints are ready
-      // const response = await createGame(gameData);
-      // navigate(`/game/${response.id}`);
+      console.log('Game initialized with context:', {
+        players: selectedPlayers,
+        maxCards: selectedMaxCards,
+        totalRounds: (selectedMaxCards * 2) - 1
+      });
       
-      // For now, just log the game setup
-      alert(`Spel wordt gestart!\nSpelers: ${selectedPlayers.join(', ')}\nMax kaarten: ${selectedMaxCards}\nAantal rondes: ${(selectedMaxCards * 2) - 1}`);
+      // TODO: Navigate to game screen when implemented
+      // navigate('/game');
+      
+      // For now, show success message
+      alert(`Spel succesvol geïnitialiseerd!\nSpelers: ${selectedPlayers.join(', ')}\nMax kaarten: ${selectedMaxCards}\nAantal rondes: ${(selectedMaxCards * 2) - 1}\n\nSpel state is nu beschikbaar in de context.`);
     } catch (error) {
       console.error('Error starting game:', error);
       alert('Fout bij het starten van het spel. Probeer het opnieuw.');
@@ -189,6 +193,11 @@ const GameSetup: React.FC = () => {
             </Typography>
           </Box>
         )}
+
+        {/* Game State Debug Component */}
+        <Box sx={{ mt: 2 }}>
+          <GameStateDebug showDetails={false} />
+        </Box>
       </Paper>
     </Container>
   );

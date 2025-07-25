@@ -4,7 +4,10 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 
 // Components
-import { MainMenu, GameSetup, GameHistory } from './components';
+import { MainMenu, GameSetup, GameHistory, GameStateTester } from './components';
+
+// Context
+import { GameProvider } from './contexts';
 
 // Create a custom theme for the application
 const theme = createTheme({
@@ -42,16 +45,19 @@ const theme = createTheme({
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Router>
-        <Routes>
-          <Route path="/" element={<MainMenu />} />
-          <Route path="/new-game" element={<GameSetup />} />
-          <Route path="/history" element={<GameHistory />} />
-        </Routes>
-      </Router>
-    </ThemeProvider>
+    <GameProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Router>
+          <Routes>
+            <Route path="/" element={<MainMenu />} />
+            <Route path="/new-game" element={<GameSetup />} />
+            <Route path="/history" element={<GameHistory />} />
+            <Route path="/test-game-state" element={<GameStateTester />} />
+          </Routes>
+        </Router>
+      </ThemeProvider>
+    </GameProvider>
   );
 }
 
