@@ -40,6 +40,35 @@ export const gameAPI = {
   
   // Get all games with optional filtering
   getAll: (params?: any) => api.get('/games', { params }),
+  
+  // Submit round data
+  submitRound: (gameId: string, roundData: any) =>
+    api.post(`/games/${gameId}/rounds`, roundData),
+  
+  // Get game scoreboard
+  getScoreboard: (gameId: string) =>
+    api.get(`/games/${gameId}/scoreboard`),
+};
+
+// Convenience functions for common operations
+export const createGame = async (players: string[], maxCards: number) => {
+  const response = await gameAPI.create(players, maxCards);
+  return response.data;
+};
+
+export const submitRound = async (gameId: string, roundData: any) => {
+  const response = await gameAPI.submitRound(gameId, roundData);
+  return response.data;
+};
+
+export const getPlayers = async () => {
+  const response = await playerAPI.getAll();
+  return response.data;
+};
+
+export const createPlayer = async (name: string) => {
+  const response = await playerAPI.create(name);
+  return response.data;
 };
 
 export { api, API_URL };

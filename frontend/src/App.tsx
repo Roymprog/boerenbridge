@@ -4,7 +4,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 
 // Components
-import { MainMenu, GameSetup, GameHistory, GameStateTester, ScoreboardDemo } from './components';
+import { MainMenu, GameSetup, GameScreen, GameHistory, GameStateTester, ScoreboardDemo } from './components';
 
 // Context
 import { GameProvider } from './contexts';
@@ -52,6 +52,7 @@ function App() {
           <Routes>
             <Route path="/" element={<MainMenu />} />
             <Route path="/new-game" element={<GameSetup />} />
+            <Route path="/game" element={<GameScreen />} />
             <Route path="/history" element={<GameHistory />} />
             <Route path="/test-game-state" element={<GameStateTester />} />
             <Route path="/scoreboard-demo" element={<ScoreboardDemo />} />

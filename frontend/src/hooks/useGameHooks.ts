@@ -53,9 +53,6 @@ export const usePlayerOrder = () => {
       playerOrder,
       biddingOrder,
       isLastBidder,
-      getPlayerPosition: (playerId: string) => {
-        return playerOrder.findIndex(p => p.id === playerId);
-      },
       getBiddingPosition: (playerId: string) => {
         return biddingOrder.findIndex(p => p.id === playerId);
       },
@@ -94,8 +91,10 @@ export const useGameProgress = () => {
     return {
       currentRound: state.currentRound,
       totalRounds: state.totalRounds,
+      progress: progressPercentage,
       progressPercentage,
       isActive: state.isGameActive,
+      isGameComplete: state.currentPhase === 'gameComplete',
       canAdvance: state.currentRound < state.totalRounds,
       nextRound,
       completeGame,
@@ -104,7 +103,8 @@ export const useGameProgress = () => {
   }, [
     state.currentRound, 
     state.totalRounds, 
-    state.isGameActive, 
+    state.isGameActive,
+    state.currentPhase,
     nextRound, 
     completeGame, 
     resetGame

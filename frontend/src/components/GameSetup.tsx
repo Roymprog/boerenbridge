@@ -54,11 +54,8 @@ const GameSetup: React.FC = () => {
         totalRounds: (selectedMaxCards * 2) - 1
       });
       
-      // TODO: Navigate to game screen when implemented
-      // navigate('/game');
-      
-      // For now, show success message
-      alert(`Spel succesvol geïnitialiseerd!\nSpelers: ${selectedPlayers.join(', ')}\nMax kaarten: ${selectedMaxCards}\nAantal rondes: ${(selectedMaxCards * 2) - 1}\n\nSpel state is nu beschikbaar in de context.`);
+      // Navigate to game screen
+      navigate('/game');
     } catch (error) {
       console.error('Error starting game:', error);
       alert('Fout bij het starten van het spel. Probeer het opnieuw.');

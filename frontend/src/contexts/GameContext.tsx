@@ -88,6 +88,19 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
     case 'INITIALIZE_GAME': {
       const { players, maxCards, gameId } = action.payload;
       const totalRounds = calculateTotalRounds(maxCards);
+      const cardsCount = calculateCardsForRound(1, maxCards);
+      
+      // Create the first round immediately
+      const firstRound: RoundData = {
+        roundNumber: 1,
+        cardsCount,
+        dealerPosition: 0,
+        bids: {},
+        tricksWon: {},
+        scores: {},
+        runningTotals: {},
+        isComplete: false,
+      };
       
       return {
         ...state,
@@ -101,7 +114,7 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
         currentRound: 1,
         currentPhase: 'bidding',
         dealerPosition: 0,
-        rounds: [],
+        rounds: [firstRound],
         isGameActive: true,
       };
     }
@@ -302,11 +315,6 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       type: 'INITIALIZE_GAME',
       payload: { players, maxCards, gameId },
     });
-
-    // Start the first round
-    setTimeout(() => {
-      dispatch({ type: 'START_ROUND', payload: { roundNumber: 1 } });
-    }, 0);
   };
 
   const startRound = (roundNumber: number) => {
