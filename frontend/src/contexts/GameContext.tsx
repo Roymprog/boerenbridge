@@ -431,8 +431,6 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const cardsInRound = currentRound.cardsCount;
 
     // Last bidder cannot make total bids equal to cards in round
-    const biddingOrder = getBiddingOrder();
-    
     if (totalBids === cardsInRound) {
       return { 
         isValid: false, 
