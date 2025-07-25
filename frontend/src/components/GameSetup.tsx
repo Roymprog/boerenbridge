@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Container,
   Paper,
@@ -18,12 +18,34 @@ import { useGame } from '../contexts';
 
 const GameSetup: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { initializeGame } = useGame();
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [playerSelectionValid, setPlayerSelectionValid] = useState(false);
   const [selectedMaxCards, setSelectedMaxCards] = useState(10);
   const [roundConfigValid, setRoundConfigValid] = useState(false);
+
+  // Handle pre-populated players from location state (e.g., from EndGame component)
+  useEffect(() => {
+    const state = location.state as { 
+      prePopulatedPlayers?: string[]; 
+      maxCards?: number 
+    } | null;
+    
+    if (state?.prePopulatedPlayers) {
+      setSelectedPlayers(state.prePopulatedPlayers);
+      // Validate if we have enough players
+      if (state.prePopulatedPlayers.length >= 3) {
+        setPlayerSelectionValid(true);
+      }
+    }
+    
+    if (state?.maxCards) {
+      setSelectedMaxCards(state.maxCards);
+      setRoundConfigValid(true);
+    }
+  }, [location.state]);
 
   const steps = ['Spelers Selecteren', 'Rondes Configureren', 'Spel Starten'];
 
@@ -108,6 +130,7 @@ const GameSetup: React.FC = () => {
               selectedPlayers={selectedPlayers}
               onPlayersChange={setSelectedPlayers}
               onValidationChange={setPlayerSelectionValid}
+              initialPlayers={location.state?.prePopulatedPlayers || []}
             />
           )}
           

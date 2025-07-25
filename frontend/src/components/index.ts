@@ -11,6 +11,7 @@ export { default as Scoreboard } from './Scoreboard';
 export { default as ScoreboardDemo } from './ScoreboardDemo';
 export { default as BiddingPhase } from './BiddingPhase';
 export { default as TricksInput } from './TricksInput';
+export { default as EndGame } from './EndGame';
 
 // This export ensures the file is treated as a module
 export {};

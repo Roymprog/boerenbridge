@@ -10,10 +10,6 @@ import {
   CardContent,
   Alert,
   LinearProgress,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   CircularProgress,
   Stepper,
   Step,
@@ -33,17 +29,16 @@ import { submitRound, createGame } from '../services/api';
 import BiddingPhase from './BiddingPhase';
 import TricksInput from './TricksInput';
 import Scoreboard from './Scoreboard';
+import EndGame from './EndGame';
 
 const GameScreen: React.FC = () => {
   const navigate = useNavigate();
   const { state, nextRound, completeGame, resetGame } = useGame();
   const { round } = useCurrentRound();
   const { isGameComplete, progress } = useGameProgress();
-  const { winner } = useGameScores();
   
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showEndGameDialog, setShowEndGameDialog] = useState(false);
   const [gameId, setGameId] = useState<string | null>(state.gameId);
   const [submittingRound, setSubmittingRound] = useState(false);
 
@@ -68,13 +63,6 @@ const GameScreen: React.FC = () => {
 
     initializeBackendGame();
   }, [gameId, state.players, state.maxCards, state.isGameActive]);
-
-  // Check for game completion
-  useEffect(() => {
-    if (isGameComplete && !showEndGameDialog) {
-      setShowEndGameDialog(true);
-    }
-  }, [isGameComplete, showEndGameDialog]);
 
   // Handle round completion and data persistence
   const handleRoundComplete = async () => {
@@ -130,14 +118,12 @@ const GameScreen: React.FC = () => {
   const handleNewGame = () => {
     resetGame();
     setGameId(null);
-    setShowEndGameDialog(false);
     navigate('/new-game');
   };
 
   const handleMainMenu = () => {
     resetGame();
     setGameId(null);
-    setShowEndGameDialog(false);
     navigate('/');
   };
 
@@ -216,6 +202,11 @@ const GameScreen: React.FC = () => {
         </Paper>
       </Container>
     );
+  }
+
+  // Show EndGame component when game is complete
+  if (isGameComplete) {
+    return <EndGame />;
   }
 
   return (
@@ -328,61 +319,6 @@ const GameScreen: React.FC = () => {
           />
         </Box>
       </Box>
-
-      {/* End Game Dialog */}
-      <Dialog
-        open={showEndGameDialog}
-        onClose={() => {}}
-        maxWidth="md"
-        fullWidth
-        disableEscapeKeyDown
-      >
-        <DialogTitle sx={{ textAlign: 'center', pb: 1 }}>
-          <TrophyIcon sx={{ fontSize: 48, color: 'gold', mb: 1 }} />
-          <Typography variant="h4" component="div">
-            Spel Voltooid!
-          </Typography>
-        </DialogTitle>
-        
-        <DialogContent>
-          {winner && (
-            <Box sx={{ textAlign: 'center', mb: 3 }}>
-              <Typography variant="h5" gutterBottom>
-                🎉 Winnaar: {winner.name} 🎉
-              </Typography>
-              <Typography variant="body1" color="text.secondary">
-                Eindscore: {state.rounds[state.rounds.length - 1]?.runningTotals[winner.id] || 0} punten
-              </Typography>
-            </Box>
-          )}
-          
-          <Scoreboard 
-            showOnlyCompleted={true}
-            highlightWinner={true}
-            readOnly={true}
-            maxHeight="400px"
-          />
-        </DialogContent>
-        
-        <DialogActions sx={{ justifyContent: 'center', gap: 2, p: 3 }}>
-          <Button
-            variant="outlined"
-            onClick={handleMainMenu}
-            startIcon={<HomeIcon />}
-            size="large"
-          >
-            Hoofdmenu
-          </Button>
-          <Button
-            variant="contained"
-            onClick={handleNewGame}
-            startIcon={<PlayIcon />}
-            size="large"
-          >
-            Nieuw Spel
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Container>
   );
 };

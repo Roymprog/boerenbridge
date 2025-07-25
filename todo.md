@@ -221,24 +221,24 @@
 
 ## Phase 5: Game Completion & History
 
-### Step 13: End Game Component ⬜
-- [ ] Create `EndGame` component
-- [ ] Implement winner determination logic:
-  - [ ] Find player with highest total score
-  - [ ] Handle tie-breaking scenarios
-- [ ] Display final scoreboard:
-  - [ ] Show complete game results
-  - [ ] Highlight winning player visually
-  - [ ] Display final scores for all players
-- [ ] Add action buttons:
-  - [ ] "Nieuw Spel" - start new game with same players
-  - [ ] "Terug naar Hoofdmenu" - return to main menu
-- [ ] Ensure game data is saved to database:
-  - [ ] Complete game record
-  - [ ] All round data
-  - [ ] Final scores and winner
-- [ ] Test game completion flow
-- [ ] Verify data persistence
+### Step 13: End Game Component ✅
+- [x] Create `EndGame` component
+- [x] Implement winner determination logic:
+  - [x] Find player with highest total score
+  - [x] Handle tie-breaking scenarios
+- [x] Display final scoreboard:
+  - [x] Show complete game results
+  - [x] Highlight winning player visually
+  - [x] Display final scores for all players
+- [x] Add action buttons:
+  - [x] "Nieuw Spel" - start new game with same players
+  - [x] "Terug naar Hoofdmenu" - return to main menu
+- [x] Ensure game data is saved to database:
+  - [x] Complete game record
+  - [x] All round data
+  - [x] Final scores and winner
+- [x] Test game completion flow
+- [x] Verify data persistence
 
 ### Step 14: Game History List Component ⬜
 - [ ] Create `GameHistory` component

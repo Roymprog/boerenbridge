@@ -32,12 +32,14 @@ interface PlayerSelectionProps {
   selectedPlayers: string[];
   onPlayersChange: (players: string[]) => void;
   onValidationChange?: (isValid: boolean) => void;
+  initialPlayers?: string[]; // New prop for pre-populated players
 }
 
 const PlayerSelection: React.FC<PlayerSelectionProps> = ({ 
   selectedPlayers, 
   onPlayersChange, 
-  onValidationChange 
+  onValidationChange,
+  initialPlayers = []
 }) => {
   const [availablePlayers, setAvailablePlayers] = useState<Player[]>([]);
   const [loading, setLoading] = useState(false);
@@ -84,6 +86,13 @@ const PlayerSelection: React.FC<PlayerSelectionProps> = ({
   useEffect(() => {
     fetchPlayers();
   }, []);
+
+  // Handle initial players (e.g., from EndGame component)
+  useEffect(() => {
+    if (initialPlayers.length > 0 && selectedPlayers.length === 0) {
+      onPlayersChange(initialPlayers);
+    }
+  }, [initialPlayers, selectedPlayers.length, onPlayersChange]);
 
   const handleAddPlayer = (playerName: string) => {
     if (!playerName.trim()) return;
