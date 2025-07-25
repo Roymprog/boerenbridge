@@ -21,7 +21,7 @@ import {
   useGameProgress,
   useGameValidation,
 } from '../hooks';
-import { BiddingPhase, TricksInput } from './index';
+import { Scoreboard, TricksInput } from './';
 
 const GameStateTester: React.FC = () => {
   const { state, initializeGame, submitBids, submitTricks, nextRound, resetGame } = useGame();
@@ -173,19 +173,6 @@ const GameStateTester: React.FC = () => {
             </Box>
           )}
 
-          {/* BiddingPhase Component Test */}
-          {gamePhase.isBidding && (
-            <Box sx={{ mb: 3 }}>
-              <Typography variant="subtitle2" gutterBottom>
-                🎯 BiddingPhase Component Test
-              </Typography>
-              <Alert severity="info" sx={{ mb: 2 }}>
-                This is the actual BiddingPhase component that will be used in the game:
-              </Alert>
-              <BiddingPhase />
-            </Box>
-          )}
-
           {/* Tricks Phase */}
           {gamePhase.isTricks && (
             <Box sx={{ mb: 3 }}>
@@ -289,6 +276,19 @@ const GameStateTester: React.FC = () => {
                 );
               })}
             </List>
+          </Box>
+
+          <Divider sx={{ my: 3 }} />
+
+          {/* Live Scoreboard */}
+          <Box>
+            <Typography variant="h6" gutterBottom>
+              📊 Live Scoreboard
+            </Typography>
+            <Scoreboard 
+              maxHeight={400}
+              hideCurrentRoundInfo={false}
+            />
           </Box>
         </>
       )}

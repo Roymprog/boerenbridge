@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
-import { calculateRoundScore } from '../utils/scoring';
 
 // Types for game state
 export interface Player {
@@ -68,6 +67,14 @@ const calculateCardsForRound = (roundNumber: number, maxCards: number): number =
     return roundNumber;
   } else {
     return maxCards - (roundNumber - maxCards);
+  }
+};
+
+const calculateRoundScore = (bid: number, tricksWon: number): number => {
+  if (bid === tricksWon) {
+    return 10 + (2 * tricksWon);
+  } else {
+    return -2 * Math.abs(bid - tricksWon);
   }
 };
 
@@ -425,7 +432,6 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     // Last bidder cannot make total bids equal to cards in round
     const biddingOrder = getBiddingOrder();
-    const lastBidderId = biddingOrder[biddingOrder.length - 1]?.id;
     
     if (totalBids === cardsInRound) {
       return { 

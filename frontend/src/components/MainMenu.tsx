@@ -128,6 +128,20 @@ const MainMenu: React.FC = () => {
           >
             🧪 Test Game State & Bidding (Dev)
           </Button>
+
+          {/* Scoreboard Demo Button */}
+          <Button
+            variant="text"
+            size="small"
+            onClick={() => navigate('/scoreboard-demo')}
+            sx={{
+              color: '#95a5a6',
+              fontSize: '0.9rem',
+              textTransform: 'none',
+            }}
+          >
+            📊 Scoreboard Demo (Dev)
+          </Button>
         </Stack>
 
         <Box sx={{ mt: 4 }}>

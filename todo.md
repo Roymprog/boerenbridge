@@ -179,24 +179,24 @@
 
 ## Phase 4: Scoreboard & Game Display
 
-### Step 11: In-Game Scoreboard Component ⬜
-- [ ] Create `Scoreboard` component
-- [ ] Implement responsive table structure:
-  - [ ] Row headers for rounds (e.g., "Ronde 1 (1 kaart)")
-  - [ ] Column groups for each player
-  - [ ] Proper table styling for desktop use
-- [ ] Add cell content display:
-  - [ ] Bid (Voorspelling)
-  - [ ] Tricks Won (Gehaald)
-  - [ ] Round Score (Score)
-  - [ ] Running Total (Totaal)
-- [ ] Implement scrolling functionality:
-  - [ ] Horizontal scrolling for many players
-  - [ ] Vertical scrolling for many rounds
-  - [ ] Maintain header visibility while scrolling
-- [ ] Style for readability and professional appearance
-- [ ] Test with various player and round combinations
-- [ ] Ensure performance with large datasets
+### Step 11: In-Game Scoreboard Component ✅
+- [x] Create `Scoreboard` component
+- [x] Implement responsive table structure:
+  - [x] Row headers for rounds (e.g., "Ronde 1 (1 kaart)")
+  - [x] Column groups for each player
+  - [x] Proper table styling for desktop use
+- [x] Add cell content display:
+  - [x] Bid (Voorspelling)
+  - [x] Tricks Won (Gehaald)
+  - [x] Round Score (Score)
+  - [x] Running Total (Totaal)
+- [x] Implement scrolling functionality:
+  - [x] Horizontal scrolling for many players
+  - [x] Vertical scrolling for many rounds
+  - [x] Maintain header visibility while scrolling
+- [x] Style for readability and professional appearance
+- [x] Test with various player and round combinations
+- [x] Ensure performance with large datasets
 
 ### Step 12: Game Progress Integration ⬜
 - [ ] Create main `GameScreen` component
