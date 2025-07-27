@@ -14,7 +14,7 @@ games_router = APIRouter(prefix="/games", tags=["games"])
 
 
 # Player endpoints
-@players_router.get("/", response_model=List[schemas.PlayerResponse])
+@players_router.get("", response_model=List[schemas.PlayerResponse])
 def get_players(
     skip: int = 0,
     limit: int = 100,
@@ -25,7 +25,7 @@ def get_players(
     return players
 
 
-@players_router.post("/", response_model=schemas.PlayerResponse)
+@players_router.post("", response_model=schemas.PlayerResponse)
 def create_player(
     player: schemas.PlayerCreate,
     db: Session = Depends(get_db)
@@ -43,7 +43,7 @@ def create_player(
 
 
 # Game endpoints
-@games_router.post("/", response_model=schemas.GameResponse)
+@games_router.post("", response_model=schemas.GameResponse)
 def create_game(
     game_data: schemas.GameCreate,
     db: Session = Depends(get_db)
@@ -82,7 +82,7 @@ def get_game(
     return game
 
 
-@games_router.get("/", response_model=schemas.GameHistoryResponse)
+@games_router.get("", response_model=schemas.GameHistoryResponse)
 def get_games_history(
     player_ids: Optional[List[int]] = Query(None),
     start_date: Optional[datetime] = None,

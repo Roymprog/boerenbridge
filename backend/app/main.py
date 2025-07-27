@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.exc import OperationalError
 from dotenv import load_dotenv
-import os
 
 from .routes import players_router, games_router
 from .database import engine
