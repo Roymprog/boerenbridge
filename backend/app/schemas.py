@@ -179,6 +179,18 @@ class GameHistoryResponse(BaseModel):
     total_pages: int
 
 
+class GameDetailResponse(BaseModel):
+    """Schema for detailed game information for continuing games."""
+    model_config = ConfigDict(from_attributes=True)
+    
+    id: int
+    created_at: datetime
+    status: GameStatus
+    max_cards: int
+    players: List[PlayerResponse]
+    rounds: List[RoundResponse]
+
+
 # Utility schemas
 class HealthResponse(BaseModel):
     """Health check response."""

@@ -201,6 +201,36 @@ def submit_round_data(
     return new_round
 
 
+@games_router.get("/{game_id}/details", response_model=schemas.GameDetailResponse)
+def get_game_details(
+    game_id: int,
+    db: Session = Depends(get_db)
+):
+    """Get detailed game information for continuing a game."""
+    game = crud.GameCRUD.get_game(db, game_id)
+    if not game:
+        raise HTTPException(status_code=404, detail="Game not found")
+    
+    # Get all rounds for this game
+    rounds = crud.RoundCRUD.get_game_rounds(db, game_id)
+    
+    # Get players in position order
+    players = [schemas.PlayerResponse(
+        id=gp.player.id,
+        name=gp.player.name,
+        created_at=gp.player.created_at
+    ) for gp in sorted(game.game_players, key=lambda x: x.position)]
+    
+    return schemas.GameDetailResponse(
+        id=game.id,
+        created_at=game.created_at,
+        status=game.status,
+        max_cards=game.max_cards,
+        players=players,
+        rounds=rounds
+    )
+
+
 @games_router.get("/{game_id}/scoreboard", response_model=schemas.ScoreboardResponse)
 def get_game_scoreboard(
     game_id: int,

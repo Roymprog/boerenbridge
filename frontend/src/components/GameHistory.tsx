@@ -34,6 +34,7 @@ import {
   CalendarToday as CalendarIcon,
   Score as ScoreIcon,
   Visibility as ViewIcon,
+  PlayArrow as PlayArrowIcon,
   ExpandMore as ExpandMoreIcon,
   ExpandLess as ExpandLessIcon,
 } from '@mui/icons-material';
@@ -176,8 +177,14 @@ const GameHistory: React.FC = () => {
     setCurrentPage(page);
   };
 
-  const handleGameClick = (gameId: number) => {
-    navigate(`/history/${gameId}`);
+  const handleGameClick = (gameId: number, gameStatus: string) => {
+    if (gameStatus === 'active') {
+      // Continue playing the active game
+      navigate(`/game/${gameId}`);
+    } else {
+      // Show read-only game detail view for completed/abandoned games
+      navigate(`/history/${gameId}`);
+    }
   };
 
   // Helper functions
@@ -424,7 +431,7 @@ const GameHistory: React.FC = () => {
                           cursor: 'pointer',
                           '&:hover': { backgroundColor: 'action.hover' }
                         }}
-                        onClick={() => handleGameClick(game.id)}
+                        onClick={() => handleGameClick(game.id, game.status)}
                       >
                         <TableCell>
                           <Typography variant="body2">
@@ -494,15 +501,16 @@ const GameHistory: React.FC = () => {
                           />
                         </TableCell>
                         <TableCell align="center">
-                          <Tooltip title="Bekijk details">
+                          <Tooltip title={game.status === 'active' ? 'Verder spelen' : 'Bekijk details'}>
                             <IconButton
                               size="small"
+                              color={game.status === 'active' ? 'primary' : 'default'}
                               onClick={(e) => {
                                 e.stopPropagation();
-                                handleGameClick(game.id);
+                                handleGameClick(game.id, game.status);
                               }}
                             >
-                              <ViewIcon />
+                              {game.status === 'active' ? <PlayArrowIcon /> : <ViewIcon />}
                             </IconButton>
                           </Tooltip>
                         </TableCell>

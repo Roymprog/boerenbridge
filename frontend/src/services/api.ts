@@ -51,6 +51,10 @@ export const gameAPI = {
   // Get game scoreboard
   getScoreboard: (gameId: string) =>
     api.get(`/games/${gameId}/scoreboard`),
+
+  // Get game details for continuing
+  getDetails: (gameId: string) =>
+    api.get(`/games/${gameId}/details`),
 };
 
 // Convenience functions for common operations
@@ -76,6 +80,11 @@ export const createPlayer = async (name: string) => {
 
 export const getGameHistory = async (filters?: any) => {
   const response = await gameAPI.getHistory(filters);
+  return response.data;
+};
+
+export const getGameDetails = async (gameId: string) => {
+  const response = await gameAPI.getDetails(gameId);
   return response.data;
 };
 

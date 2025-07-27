@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -24,7 +24,8 @@ import {
 } from '@mui/icons-material';
 import { useGame, useError, useConfirmation } from '../contexts';
 import { useCurrentRound, useGameProgress } from '../hooks';
-import { submitRound, createGame } from '../services/api';
+import { submitRound, createGame, getGameDetails } from '../services/api';
+import { Player, RoundData, GamePhase } from '../contexts/GameContext';
 import BiddingPhase from './BiddingPhase';
 import TricksInput from './TricksInput';
 import Scoreboard from './Scoreboard';
@@ -32,22 +33,130 @@ import EndGame from './EndGame';
 
 const GameScreen: React.FC = () => {
   const navigate = useNavigate();
-  const { state, nextRound, completeGame, resetGame } = useGame();
+  const { gameId: paramGameId } = useParams<{ gameId: string }>();
+  const { state, loadExistingGame, nextRound, completeGame, resetGame } = useGame();
   const { showError, showSuccess } = useError();
   const { confirm } = useConfirmation();
   const { round } = useCurrentRound();
   const { isGameComplete, progress } = useGameProgress();
   
   const [loading, setLoading] = useState(false);
-  const [gameId, setGameId] = useState<string | null>(state.gameId);
+  const [gameId, setGameId] = useState<string | null>(state.gameId || paramGameId || null);
   const [submittingRound, setSubmittingRound] = useState(false);
 
-  // Initialize game in backend when component mounts
+  // Initialize game in backend or load existing game when component mounts
   useEffect(() => {
-    const initializeBackendGame = async () => {
-      if (!gameId && state.players.length > 0 && state.isGameActive) {
+    const initializeOrLoadGame = async () => {
+      if (paramGameId && !state.isGameActive) {
+        // Load existing game from backend
         try {
-                  setLoading(true);
+          setLoading(true);
+          const gameData = await getGameDetails(paramGameId);
+          
+          // Convert backend data to frontend format
+          const players: Player[] = gameData.players.map((player: any, index: number) => ({
+            id: `player-${index}`,
+            name: player.name,
+            position: index,
+          }));
+
+          const rounds: RoundData[] = gameData.rounds.map((round: any) => {
+            const bids: Record<string, number> = {};
+            const tricksWon: Record<string, number> = {};
+            const scores: Record<string, number> = {};
+            const runningTotals: Record<string, number> = {};
+
+            round.round_scores.forEach((score: any, index: number) => {
+              const playerId = `player-${index}`;
+              bids[playerId] = score.bid;
+              tricksWon[playerId] = score.tricks_won;
+              scores[playerId] = score.score;
+              runningTotals[playerId] = score.running_total;
+            });
+
+            return {
+              roundNumber: round.round_number,
+              cardsCount: round.cards_count,
+              dealerPosition: round.dealer_position,
+              bids,
+              tricksWon,
+              scores,
+              runningTotals,
+              isComplete: true,
+            };
+          });
+
+          // Determine current game state
+          let currentPhase: GamePhase;
+          let currentRound: number;
+          let dealerPosition: number;
+          let isGameActive: boolean;
+
+          if (gameData.status === 'completed') {
+            currentPhase = 'gameComplete';
+            currentRound = rounds.length;
+            dealerPosition = rounds[rounds.length - 1]?.dealerPosition || 0;
+            isGameActive = false;
+          } else if (gameData.status === 'active') {
+            // Determine if we need to continue current round or start next
+            const totalRounds = (gameData.max_cards * 2) - 1;
+            
+            if (rounds.length < totalRounds) {
+              // Need to start next round
+              currentRound = rounds.length + 1;
+              currentPhase = 'bidding';
+              dealerPosition = rounds.length > 0 ? (rounds[rounds.length - 1].dealerPosition + 1) % players.length : 0;
+              
+              // Add next round data
+              const nextRoundCards = currentRound <= gameData.max_cards ? currentRound : gameData.max_cards - (currentRound - gameData.max_cards);
+              rounds.push({
+                roundNumber: currentRound,
+                cardsCount: nextRoundCards,
+                dealerPosition,
+                bids: {},
+                tricksWon: {},
+                scores: {},
+                runningTotals: {},
+                isComplete: false,
+              });
+            } else {
+              // Game should be completed
+              currentPhase = 'gameComplete';
+              currentRound = rounds.length;
+              dealerPosition = rounds[rounds.length - 1]?.dealerPosition || 0;
+            }
+            isGameActive = currentPhase !== 'gameComplete';
+          } else {
+            // Abandoned game - treat as read-only
+            currentPhase = 'gameComplete';
+            currentRound = rounds.length;
+            dealerPosition = rounds[rounds.length - 1]?.dealerPosition || 0;
+            isGameActive = false;
+          }
+
+          loadExistingGame(
+            paramGameId,
+            players,
+            gameData.max_cards,
+            rounds,
+            currentRound,
+            currentPhase,
+            dealerPosition,
+            isGameActive
+          );
+          
+          setGameId(paramGameId);
+        } catch (err) {
+          console.error('Failed to load existing game:', err);
+          showError('Failed to load game. Redirecting to main menu.');
+          navigate('/');
+        } finally {
+          setLoading(false);
+        }
+      } else if (!gameId && state.players.length > 0 && state.isGameActive) {
+        // Create new game in backend
+        try {
+          setLoading(true);
           const playerNames = state.players.map(p => p.name);
           const gameData = await createGame(playerNames, state.maxCards);
           setGameId(gameData.id);
@@ -60,8 +169,8 @@ const GameScreen: React.FC = () => {
       }
     };
 
-    initializeBackendGame();
-  }, [gameId, state.players, state.maxCards, state.isGameActive, showError]);
+    initializeOrLoadGame();
+  }, [paramGameId, gameId, state.players, state.maxCards, state.isGameActive, showError, navigate, loadExistingGame]);
 
   // Handle round completion and data persistence
   const handleRoundComplete = async () => {

@@ -35,6 +35,7 @@ export interface GameState {
 // Action types
 export type GameAction =
   | { type: 'INITIALIZE_GAME'; payload: { players: Player[]; maxCards: number; gameId?: string } }
+  | { type: 'LOAD_EXISTING_GAME'; payload: { gameId: string; players: Player[]; maxCards: number; rounds: RoundData[]; currentRound: number; currentPhase: GamePhase; dealerPosition: number; isGameActive: boolean } }
   | { type: 'START_ROUND'; payload: { roundNumber: number } }
   | { type: 'SET_PHASE'; payload: { phase: GamePhase } }
   | { type: 'SUBMIT_BIDS'; payload: { bids: Record<string, number> } }
@@ -116,6 +117,24 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
         dealerPosition: 0,
         rounds: [firstRound],
         isGameActive: true,
+      };
+    }
+
+    case 'LOAD_EXISTING_GAME': {
+      const { gameId, players, maxCards, rounds, currentRound, currentPhase, dealerPosition, isGameActive } = action.payload;
+      const totalRounds = calculateTotalRounds(maxCards);
+
+      return {
+        ...state,
+        gameId,
+        players,
+        maxCards,
+        totalRounds,
+        currentRound,
+        currentPhase,
+        dealerPosition,
+        rounds,
+        isGameActive,
       };
     }
 
@@ -275,6 +294,7 @@ interface GameContextType {
   dispatch: React.Dispatch<GameAction>;
   // Helper functions
   initializeGame: (players: string[], maxCards: number, gameId?: string) => void;
+  loadExistingGame: (gameId: string, players: Player[], maxCards: number, rounds: RoundData[], currentRound: number, currentPhase: GamePhase, dealerPosition: number, isGameActive: boolean) => void;
   startRound: (roundNumber: number) => void;
   setPhase: (phase: GamePhase) => void;
   submitBids: (bids: Record<string, number>) => void;
@@ -314,6 +334,13 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     dispatch({
       type: 'INITIALIZE_GAME',
       payload: { players, maxCards, gameId },
+    });
+  };
+
+  const loadExistingGame = (gameId: string, players: Player[], maxCards: number, rounds: RoundData[], currentRound: number, currentPhase: GamePhase, dealerPosition: number, isGameActive: boolean) => {
+    dispatch({
+      type: 'LOAD_EXISTING_GAME',
+      payload: { gameId, players, maxCards, rounds, currentRound, currentPhase, dealerPosition, isGameActive },
     });
   };
 
@@ -472,6 +499,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     state,
     dispatch,
     initializeGame,
+    loadExistingGame,
     startRound,
     setPhase,
     submitBids,

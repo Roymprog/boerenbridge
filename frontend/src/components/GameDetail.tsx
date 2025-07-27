@@ -31,6 +31,7 @@ import {
   CalendarToday as CalendarIcon,
   Score as ScoreIcon,
   CardGiftcard as CardsIcon,
+  PlayArrow as PlayArrowIcon,
 } from '@mui/icons-material';
 
 import { gameAPI } from '../services/api';
@@ -119,6 +120,10 @@ const GameDetail: React.FC = () => {
 
   const handleHome = () => {
     navigate('/');
+  };
+
+  const handleContinuePlaying = () => {
+    navigate(`/game/${gameId}`);
   };
 
   const formatDate = (dateString: string): string => {
@@ -220,6 +225,16 @@ const GameDetail: React.FC = () => {
           </Breadcrumbs>
 
           <Box sx={{ display: 'flex', gap: 1 }}>
+            {game.status === 'active' && (
+              <Button
+                startIcon={<PlayArrowIcon />}
+                onClick={handleContinuePlaying}
+                variant="contained"
+                color="primary"
+              >
+                Verder Spelen
+              </Button>
+            )}
             <Button
               startIcon={<ArrowBackIcon />}
               onClick={handleBack}
