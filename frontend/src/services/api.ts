@@ -54,7 +54,7 @@ export const gameAPI = {
 
   // Get game details for continuing
   getDetails: (gameId: string) =>
-    api.get(`/games/${gameId}/details`),
+    api.get(`/games/${gameId}`),
 };
 
 // Convenience functions for common operations
