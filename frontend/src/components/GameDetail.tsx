@@ -137,9 +137,9 @@ const GameDetail: React.FC = () => {
   };
 
   const getWinnerName = (): string => {
-    if (!gameData?.scoreboard.winner_id || !gameData?.game.players) return '';
-    const winner = gameData.game.players.find(p => p.id === gameData.scoreboard.winner_id);
-    return winner?.name || '';
+    if (!gameData?.scoreboard.winner_id) return '';
+    const winner = gameData.scoreboard.players.find(p => p.player_id === gameData.scoreboard.winner_id);
+    return winner?.player_name || '';
   };
 
   const getRoundTitle = (roundIndex: number, totalRounds: number, maxCards: number): string => {
@@ -244,7 +244,7 @@ const GameDetail: React.FC = () => {
             />
             <Chip
               icon={<PersonIcon />}
-              label={`${game.players.length} spelers`}
+              label={`${scoreboard.players.length} spelers`}
               variant="outlined"
             />
             <Chip
