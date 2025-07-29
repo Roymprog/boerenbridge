@@ -55,7 +55,7 @@ const GameScreen: React.FC = () => {
           
           // Convert backend data to frontend format
           const players: Player[] = gameData.players.map((player: any, index: number) => ({
-            id: `player-${index}`,
+            id: player.id,
             name: player.name,
             position: index,
           }));
@@ -66,8 +66,8 @@ const GameScreen: React.FC = () => {
             const scores: Record<string, number> = {};
             const runningTotals: Record<string, number> = {};
 
-            round.round_scores.forEach((score: any, index: number) => {
-              const playerId = `player-${index}`;
+            round.round_scores.forEach((score: any, _: number) => {
+              const playerId = score.player.id;
               bids[playerId] = score.bid;
               tricksWon[playerId] = score.tricks_won;
               scores[playerId] = score.score;
@@ -185,8 +185,8 @@ const GameScreen: React.FC = () => {
           round_number: round.roundNumber,
           cards_count: round.cardsCount,
           dealer_position: round.dealerPosition,
-          player_data: state.players.map(player => ({
-            player_name: player.name,
+          scores: state.players.map(player => ({
+            player_id: player.id,
             bid: round.bids[player.id] || 0,
             tricks_won: round.tricksWon[player.id] || 0,
             score: round.scores[player.id] || 0,
