@@ -225,7 +225,7 @@ const GameScreen: React.FC = () => {
   const handleNewGame = () => {
     confirm({
       title: 'Nieuw spel starten',
-      message: 'Weet je zeker dat je een nieuw spel wilt starten? Het huidige spel gaat verloren.',
+      message: 'Weet je zeker dat je een nieuw spel wilt starten?',
       severity: 'warning',
       confirmText: 'Nieuw Spel',
       confirmColor: 'warning',
@@ -241,7 +241,7 @@ const GameScreen: React.FC = () => {
   const handleMainMenu = () => {
     confirm({
       title: 'Naar hoofdmenu',
-      message: 'Weet je zeker dat je naar het hoofdmenu wilt? Het huidige spel gaat verloren.',
+      message: 'Weet je zeker dat je naar het hoofdmenu wilt?',
       severity: 'warning',
       confirmText: 'Hoofdmenu',
       confirmColor: 'warning',

@@ -29,12 +29,17 @@ const BiddingPhase: React.FC = () => {
   const [validationError, setValidationError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  // Initialize bids from current round if they exist
+  // Initialize bids from current round if they exist, otherwise set to zero
   useEffect(() => {
     if (round?.bids) {
-      setBids(round.bids);
+      // Initialize all players with their existing bids or zero if no bid exists
+      const initialBids: Record<string, number> = {};
+      biddingOrder.forEach(player => {
+        initialBids[player.id] = round.bids[player.id] ?? 0;
+      });
+      setBids(initialBids);
     }
-  }, [round]);
+  }, [round, biddingOrder]);
 
   // Generate valid bid options (0 to cards count)
   const bidOptions = useMemo(() => {
