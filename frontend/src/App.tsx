@@ -10,8 +10,6 @@ import {
   GameScreen, 
   GameHistory, 
   GameDetail, 
-  GameStateTester, 
-  ScoreboardDemo,
   ErrorBoundary 
 } from './components';
 

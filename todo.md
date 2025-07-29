@@ -385,3 +385,8 @@
 - Keep notes on any deviations from the plan
 - Update the plan if requirements change
 - Maintain code quality throughout the process
+
+
+ // Spel Samenvatting weghalen
+ // TODO: Standaard 9 kaarten bij 4 spelers
+ // TODO: Maak het mogelijk deler te selecteren bij selecteren spelers
