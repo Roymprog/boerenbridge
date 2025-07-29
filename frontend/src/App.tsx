@@ -82,8 +82,6 @@ function App() {
                     <Route path="/game/:gameId" element={<GameScreen />} />
                     <Route path="/history" element={<GameHistory />} />
                     <Route path="/history/:gameId" element={<GameDetail />} />
-                    <Route path="/test-game-state" element={<GameStateTester />} />
-                    <Route path="/scoreboard-demo" element={<ScoreboardDemo />} />
                   </Routes>
                 </Router>
               </GameProvider>
