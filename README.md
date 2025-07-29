@@ -1,3 +1,5 @@
+Disclaimer: This code was built completely through vibe coding.
+
 # Boerenbridge Scorekeeping Web Application
 
 A modern web application for keeping track of Boerenbridge game scores with a React TypeScript frontend and FastAPI backend.
