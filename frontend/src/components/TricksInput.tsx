@@ -42,7 +42,7 @@ const TricksInput: React.FC = () => {
   const totalTricks = Object.values(tricksWon).reduce((sum, tricks) => sum + tricks, 0);
   const isValidTotal = totalTricks === cardsCount;
 
-  const handleTricksChange = (playerId: string, value: string) => {
+  const handleTricksChange = (playerId: number, value: string) => {
     const tricksValue = Math.max(0, parseInt(value) || 0);
     setTricksWon(prev => ({
       ...prev,

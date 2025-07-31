@@ -28,10 +28,10 @@ import { useGameScores } from '../hooks';
 import Scoreboard from './Scoreboard';
 
 interface WinnerInfo {
-  player: { id: string; name: string; position: number };
+  player: { id: number; name: string; position: number };
   score: number;
   isTie: boolean;
-  tiedPlayers?: { id: string; name: string; position: number; score: number }[];
+  tiedPlayers?: { id: number; name: string; position: number; score: number }[];
 }
 
 const EndGame: React.FC = () => {

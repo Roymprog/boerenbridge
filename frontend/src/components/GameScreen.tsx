@@ -157,8 +157,8 @@ const GameScreen: React.FC = () => {
         // Create new game in backend
         try {
           setLoading(true);
-          const playerNames = state.players.map(p => p.name);
-          const gameData = await createGame(playerNames, state.maxCards);
+          const playerIds = state.players.map(p => p.id);
+          const gameData = await createGame(playerIds, state.maxCards);
           setGameId(gameData.id);
         } catch (err) {
           console.error('Failed to create game in backend:', err);

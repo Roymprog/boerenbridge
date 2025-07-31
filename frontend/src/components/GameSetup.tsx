@@ -17,7 +17,7 @@ import GameStateDebug from './GameStateDebug';
 import { useGame } from '../contexts';
 
 export interface GameSetupPlayer {
-  id: string;
+  id: number;
   name: string;
 }
 

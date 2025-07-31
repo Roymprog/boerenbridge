@@ -32,8 +32,8 @@ export const playerAPI = {
 
 export const gameAPI = {
   // Create a new game
-  create: (players: string[], maxCards: number) => 
-    api.post('/games', { players, max_cards: maxCards }),
+  create: (player_ids: number[], maxCards: number) => 
+    api.post('/games', { player_ids, max_cards: maxCards }),
   
   // Get game by ID
   getById: (gameId: number) => api.get(`/games/${gameId}`),
@@ -58,8 +58,8 @@ export const gameAPI = {
 };
 
 // Convenience functions for common operations
-export const createGame = async (players: string[], maxCards: number) => {
-  const response = await gameAPI.create(players, maxCards);
+export const createGame = async (player_ids: number[], maxCards: number) => {
+  const response = await gameAPI.create(player_ids, maxCards);
   return response.data;
 };
 

@@ -25,7 +25,7 @@ const BiddingPhase: React.FC = () => {
   const { biddingOrder, isLastBidder } = usePlayerOrder();
   const { setPhase } = useGamePhase();
 
-  const [bids, setBids] = useState<Record<string, number>>({});
+  const [bids, setBids] = useState<Record<number, number>>({});
   const [validationError, setValidationError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -63,21 +63,21 @@ const BiddingPhase: React.FC = () => {
   }, [bids, biddingOrder, validateBids]);
 
   // Get filtered bid options for a specific player (considering last bidder rule)
-  const getFilteredBidOptions = (playerId: string): number[] => {
+  const getFilteredBidOptions = (playerId: number): number[] => {
     if (!isLastBidder(playerId)) {
       return bidOptions;
     }
 
     // For last bidder, exclude bids that would make total equal to cards count
     const otherPlayersTotal = Object.entries(bids)
-      .filter(([id]) => id !== playerId)
+      .filter(([id]) => id !== playerId.toString())
       .reduce((sum, [, bid]) => sum + (bid || 0), 0);
 
     return bidOptions.filter(bid => otherPlayersTotal + bid !== cardsCount);
   };
 
   // Handle bid change for a player
-  const handleBidChange = (playerId: string, bid: number | null) => {
+  const handleBidChange = (playerId: number, bid: number | null) => {
     if (bid === null) {
       const newBids = { ...bids };
       delete newBids[playerId];
@@ -225,7 +225,7 @@ const BiddingPhase: React.FC = () => {
                       helperText={
                         isLastPlayer 
                           ? `Mag niet ${cardsCount - Object.entries(bids)
-                              .filter(([id]) => id !== player.id)
+                              .filter(([id]) => id !== player.id.toString())
                               .reduce((sum, [, bid]) => sum + (bid || 0), 0)} bieden`
                           : `0 tot ${cardsCount} slagen`
                       }

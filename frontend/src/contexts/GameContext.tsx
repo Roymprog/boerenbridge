@@ -3,7 +3,7 @@ import {GameSetupPlayer} from '../components/GameSetup';
 
 // Types for game state
 export interface GameContextPlayer {
-  id: string;
+  id: number;
   name: string;
   position: number;
 }
@@ -311,7 +311,7 @@ interface GameContextType {
   getPlayerOrder: () => GameContextPlayer[];
   getBiddingOrder: () => GameContextPlayer[];
   getWinner: () => GameContextPlayer | null;
-  isLastBidder: (playerId: string) => boolean;
+  isLastBidder: (playerId: number) => boolean;
   canProceedFromBidding: () => boolean;
   canProceedFromTricks: () => boolean;
   validateBids: (bids: Record<string, number>) => { isValid: boolean; error?: string };
@@ -416,19 +416,19 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const lastRound = state.rounds[state.rounds.length - 1];
     let highestScore = -Infinity;
-    let winnerId = '';
+    let winnerId = 0;
 
     Object.entries(lastRound.runningTotals).forEach(([playerId, score]) => {
       if (score > highestScore) {
         highestScore = score;
-        winnerId = playerId;
+        winnerId = parseInt(playerId);
       }
     });
 
     return state.players.find(p => p.id === winnerId) || null;
   };
 
-  const isLastBidder = (playerId: string): boolean => {
+  const isLastBidder = (playerId: number): boolean => {
     const biddingOrder = getBiddingOrder();
     return biddingOrder[biddingOrder.length - 1]?.id === playerId;
   };

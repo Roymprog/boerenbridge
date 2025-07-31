@@ -34,7 +34,7 @@ export const useDealer = () => {
       dealer,
       dealerPosition: state.dealerPosition,
       dealerName: dealer?.name || '',
-      isDealer: (playerId: string) => dealer?.id === playerId,
+      isDealer: (playerId: number) => dealer?.id === playerId,
     };
   }, [state.dealerPosition, getDealerPlayer]);
 };
@@ -53,7 +53,7 @@ export const usePlayerOrder = () => {
       playerOrder,
       biddingOrder,
       isLastBidder,
-      getBiddingPosition: (playerId: string) => {
+      getBiddingPosition: (playerId: number) => {
         return biddingOrder.findIndex(p => p.id === playerId);
       },
     };
