@@ -1,6 +1,6 @@
 // Re-export all contexts for cleaner imports
 export { GameProvider, useGame } from './GameContext';
-export type { GameState, Player, RoundData, GamePhase, GameAction } from './GameContext';
+export type { GameState, GameContextPlayer as Player, RoundData, GamePhase, GameAction } from './GameContext';
 
 // Error handling contexts
 export { ErrorProvider, useError } from './ErrorContext';

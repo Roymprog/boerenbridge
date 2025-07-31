@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
+import {GameSetupPlayer} from '../components/GameSetup';
 
 // Types for game state
-export interface Player {
+export interface GameContextPlayer {
   id: string;
   name: string;
   position: number;
@@ -22,7 +23,7 @@ export type GamePhase = 'setup' | 'bidding' | 'tricks' | 'roundComplete' | 'game
 
 export interface GameState {
   gameId: string | null;
-  players: Player[];
+  players: GameContextPlayer[];
   maxCards: number;
   currentRound: number;
   currentPhase: GamePhase;
@@ -34,8 +35,8 @@ export interface GameState {
 
 // Action types
 export type GameAction =
-  | { type: 'INITIALIZE_GAME'; payload: { players: Player[]; maxCards: number; gameId?: string } }
-  | { type: 'LOAD_EXISTING_GAME'; payload: { gameId: string; players: Player[]; maxCards: number; rounds: RoundData[]; currentRound: number; currentPhase: GamePhase; dealerPosition: number; isGameActive: boolean } }
+  | { type: 'INITIALIZE_GAME'; payload: { players: GameContextPlayer[]; maxCards: number; gameId?: string } }
+  | { type: 'LOAD_EXISTING_GAME'; payload: { gameId: string; players: GameContextPlayer[]; maxCards: number; rounds: RoundData[]; currentRound: number; currentPhase: GamePhase; dealerPosition: number; isGameActive: boolean } }
   | { type: 'START_ROUND'; payload: { roundNumber: number } }
   | { type: 'SET_PHASE'; payload: { phase: GamePhase } }
   | { type: 'SUBMIT_BIDS'; payload: { bids: Record<string, number> } }
@@ -293,8 +294,8 @@ interface GameContextType {
   state: GameState;
   dispatch: React.Dispatch<GameAction>;
   // Helper functions
-  initializeGame: (players: string[], maxCards: number, gameId?: string) => void;
-  loadExistingGame: (gameId: string, players: Player[], maxCards: number, rounds: RoundData[], currentRound: number, currentPhase: GamePhase, dealerPosition: number, isGameActive: boolean) => void;
+  initializeGame: (players: GameSetupPlayer[], maxCards: number, gameId?: string) => void;
+  loadExistingGame: (gameId: string, players: GameContextPlayer[], maxCards: number, rounds: RoundData[], currentRound: number, currentPhase: GamePhase, dealerPosition: number, isGameActive: boolean) => void;
   startRound: (roundNumber: number) => void;
   setPhase: (phase: GamePhase) => void;
   submitBids: (bids: Record<string, number>) => void;
@@ -304,12 +305,12 @@ interface GameContextType {
   resetGame: () => void;
   // Computed values
   getCurrentRound: () => RoundData | null;
-  getPlayerInPosition: (position: number) => Player | null;
-  getDealerPlayer: () => Player | null;
+  getPlayerInPosition: (position: number) => GameContextPlayer | null;
+  getDealerPlayer: () => GameContextPlayer | null;
   getCurrentCards: () => number;
-  getPlayerOrder: () => Player[];
-  getBiddingOrder: () => Player[];
-  getWinner: () => Player | null;
+  getPlayerOrder: () => GameContextPlayer[];
+  getBiddingOrder: () => GameContextPlayer[];
+  getWinner: () => GameContextPlayer | null;
   isLastBidder: (playerId: string) => boolean;
   canProceedFromBidding: () => boolean;
   canProceedFromTricks: () => boolean;
@@ -324,10 +325,10 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [state, dispatch] = useReducer(gameReducer, initialState);
 
   // Helper functions
-  const initializeGame = (playerNames: string[], maxCards: number, gameId?: string) => {
-    const players: Player[] = playerNames.map((name, index) => ({
-      id: `player-${index}`,
-      name,
+  const initializeGame = (gameSetupPlayers: GameSetupPlayer[], maxCards: number, gameId?: string) => {
+    const players: GameContextPlayer[] = gameSetupPlayers.map((player, index) => ({
+      id: player.id,
+      name: player.name,
       position: index,
     }));
 
@@ -337,7 +338,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     });
   };
 
-  const loadExistingGame = (gameId: string, players: Player[], maxCards: number, rounds: RoundData[], currentRound: number, currentPhase: GamePhase, dealerPosition: number, isGameActive: boolean) => {
+  const loadExistingGame = (gameId: string, players: GameContextPlayer[], maxCards: number, rounds: RoundData[], currentRound: number, currentPhase: GamePhase, dealerPosition: number, isGameActive: boolean) => {
     dispatch({
       type: 'LOAD_EXISTING_GAME',
       payload: { gameId, players, maxCards, rounds, currentRound, currentPhase, dealerPosition, isGameActive },
@@ -377,11 +378,11 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return state.rounds[state.rounds.length - 1] || null;
   };
 
-  const getPlayerInPosition = (position: number): Player | null => {
+  const getPlayerInPosition = (position: number): GameContextPlayer | null => {
     return state.players.find(p => p.position === position) || null;
   };
 
-  const getDealerPlayer = (): Player | null => {
+  const getDealerPlayer = (): GameContextPlayer | null => {
     return getPlayerInPosition(state.dealerPosition);
   };
 
@@ -390,11 +391,11 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return currentRound ? currentRound.cardsCount : 0;
   };
 
-  const getPlayerOrder = (): Player[] => {
+  const getPlayerOrder = (): GameContextPlayer[] => {
     return [...state.players].sort((a, b) => a.position - b.position);
   };
 
-  const getBiddingOrder = (): Player[] => {
+  const getBiddingOrder = (): GameContextPlayer[] => {
     const players = getPlayerOrder();
     const dealerIndex = state.dealerPosition;
     
@@ -408,7 +409,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return orderedPlayers;
   };
 
-  const getWinner = (): Player | null => {
+  const getWinner = (): GameContextPlayer | null => {
     if (state.currentPhase !== 'gameComplete' || state.rounds.length === 0) {
       return null;
     }

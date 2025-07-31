@@ -12,10 +12,10 @@ export interface GameHistoryFilter {
   page_size: number;
 }
 
-export interface PlayerInfo {
+export interface Player {
   id: number;
   name: string;
-  created_at: string;
+  created_at?: string;
 }
 
 export interface GameSummary {
@@ -23,7 +23,7 @@ export interface GameSummary {
   created_at: string;
   status: 'active' | 'completed' | 'abandoned';
   max_cards: number;
-  players: PlayerInfo[];
+  players: Player[];
   final_scores?: number[];
   winner_id?: number;
 }

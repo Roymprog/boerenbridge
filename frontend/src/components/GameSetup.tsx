@@ -16,11 +16,16 @@ import RoundConfiguration from './RoundConfiguration';
 import GameStateDebug from './GameStateDebug';
 import { useGame } from '../contexts';
 
+export interface GameSetupPlayer {
+  id: string;
+  name: string;
+}
+
 const GameSetup: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { initializeGame } = useGame();
-  const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
+  const [selectedPlayers, setSelectedPlayers] = useState<GameSetupPlayer[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [playerSelectionValid, setPlayerSelectionValid] = useState(false);
   const [selectedMaxCards, setSelectedMaxCards] = useState(10);
@@ -29,7 +34,7 @@ const GameSetup: React.FC = () => {
   // Handle pre-populated players from location state (e.g., from EndGame component)
   useEffect(() => {
     const state = location.state as { 
-      prePopulatedPlayers?: string[]; 
+      prePopulatedPlayers?: GameSetupPlayer[]; 
       maxCards?: number 
     } | null;
     

@@ -24,10 +24,10 @@ api.interceptors.response.use(
 // API Helper Functions
 export const playerAPI = {
   // Get all players
-  getAll: () => api.get('/players/'),
+  getAll: () => api.get('/players'),
   
   // Create a new player
-  create: (name: string) => api.post('/players/', { name }),
+  create: (name: string) => api.post('/players', { name }),
 };
 
 export const gameAPI = {

@@ -25,7 +25,7 @@ import {
 import { useGame, useError, useConfirmation } from '../contexts';
 import { useCurrentRound, useGameProgress } from '../hooks';
 import { submitRound, createGame, getGameDetails } from '../services/api';
-import { Player, RoundData, GamePhase } from '../contexts/GameContext';
+import { GameContextPlayer, RoundData, GamePhase } from '../contexts/GameContext';
 import BiddingPhase from './BiddingPhase';
 import TricksInput from './TricksInput';
 import Scoreboard from './Scoreboard';
@@ -54,7 +54,7 @@ const GameScreen: React.FC = () => {
           const gameData = await getGameDetails(paramGameId);
           
           // Convert backend data to frontend format
-          const players: Player[] = gameData.players.map((player: any, index: number) => ({
+          const players: GameContextPlayer[] = gameData.players.map((player: any, index: number) => ({
             id: player.id,
             name: player.name,
             position: index,

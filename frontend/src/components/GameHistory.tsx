@@ -40,7 +40,7 @@ import {
 } from '@mui/icons-material';
 
 import { getPlayers, getGameHistory } from '../services/api';
-import { GameHistoryResponse, GameSummary, PlayerInfo, GameHistoryFilters } from '../types/gameHistory';
+import { GameHistoryResponse, GameSummary, Player, GameHistoryFilters } from '../types/gameHistory';
 import { useError, useLoading } from '../contexts';
 import { GameHistorySkeleton } from './SkeletonLoaders';
 
@@ -55,7 +55,7 @@ const GameHistory: React.FC = () => {
 
   // State management
   const [games, setGames] = useState<GameSummary[]>([]);
-  const [allPlayers, setAllPlayers] = useState<PlayerInfo[]>([]);
+  const [allPlayers, setAllPlayers] = useState<Player[]>([]);
   const [loading, setLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
   

@@ -21,19 +21,17 @@ import {
   PersonAdd as PersonAddIcon,
   Group as GroupIcon
 } from '@mui/icons-material';
-import { playerAPI } from '../services/api';
+import { createPlayer, playerAPI } from '../services/api';
 import { useError } from '../contexts';
+import { GameSetupPlayer } from './GameSetup';
+import { exit } from 'process';
 
-interface Player {
-  id: number;
-  name: string;
-}
 
 interface PlayerSelectionProps {
-  selectedPlayers: string[];
-  onPlayersChange: (players: string[]) => void;
+  selectedPlayers: GameSetupPlayer[];
+  onPlayersChange: (players: GameSetupPlayer[]) => void;
   onValidationChange?: (isValid: boolean) => void;
-  initialPlayers?: string[]; // New prop for pre-populated players
+  initialPlayers?: GameSetupPlayer[]; // New prop for pre-populated players
 }
 
 const PlayerSelection: React.FC<PlayerSelectionProps> = ({ 
@@ -43,7 +41,7 @@ const PlayerSelection: React.FC<PlayerSelectionProps> = ({
   initialPlayers = []
 }) => {
   const { showError, showSuccess } = useError();
-  const [availablePlayers, setAvailablePlayers] = useState<Player[]>([]);
+  const [availablePlayers, setAvailablePlayers] = useState<GameSetupPlayer[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPlayers, setFilteredPlayers] = useState<string[]>([]);
@@ -71,11 +69,11 @@ const PlayerSelection: React.FC<PlayerSelectionProps> = ({
     const playerNames = availablePlayers.map(p => p.name);
     const filtered = playerNames.filter(name =>
       name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      !selectedPlayers.includes(name)
+      !selectedPlayers.some(player => player.name === name)
     );
 
     // If search term doesn't match any existing player, include it as a new option
-    if (!filtered.includes(searchTerm) && !selectedPlayers.includes(searchTerm)) {
+    if (!filtered.includes(searchTerm) && !selectedPlayers.some(player => player.name === searchTerm)) {
       filtered.unshift(searchTerm); // Add to beginning
     }
 
@@ -94,11 +92,11 @@ const PlayerSelection: React.FC<PlayerSelectionProps> = ({
     }
   }, [initialPlayers, selectedPlayers.length, onPlayersChange]);
 
-  const handleAddPlayer = (playerName: string) => {
+  const handleAddPlayer = async (playerName: string) => {
     if (!playerName.trim()) return;
     
     const trimmedName = playerName.trim();
-    if (selectedPlayers.includes(trimmedName)) {
+    if (selectedPlayers.some(player => player.name === trimmedName)) {
       showError(`${trimmedName} is al toegevoegd`);
       return;
     }
@@ -107,14 +105,39 @@ const PlayerSelection: React.FC<PlayerSelectionProps> = ({
       return;
     }
 
-    const newPlayers = [...selectedPlayers, trimmedName];
-    onPlayersChange(newPlayers);
-    setSearchTerm('');
-    showSuccess(`${trimmedName} toegevoegd`);
+    // Check if player exists in available players
+    const existingPlayer = availablePlayers.find(p => p.name === trimmedName);
+    
+    if (!existingPlayer) {
+      // Player doesn't exist, create new player
+      try {
+        setLoading(true);
+        const response = await createPlayer(trimmedName);
+        const newPlayer = { id: response.id, name: response.name };
+        // Refresh the players list to include the new player
+        await fetchPlayers();
+        const newPlayers = [...selectedPlayers, newPlayer];
+        onPlayersChange(newPlayers);
+        setSearchTerm('');
+        showSuccess(`Nieuwe speler ${trimmedName} aangemaakt en toegevoegd`);
+      } catch (err: any) {
+        showError('Fout bij aanmaken van nieuwe speler: ' + (err.response?.data?.detail || err.message));
+        setLoading(false);
+        return;
+      } finally {
+        setLoading(false);
+      }
+
+    } else{
+      const newPlayers = [...selectedPlayers, existingPlayer];
+      onPlayersChange(newPlayers);
+      setSearchTerm('');
+      showSuccess(`${trimmedName} toegevoegd`);
+    }
   };
 
   const handleRemovePlayer = (playerName: string) => {
-    const newPlayers = selectedPlayers.filter(p => p !== playerName);
+    const newPlayers = selectedPlayers.filter(p => p.name !== playerName);
     onPlayersChange(newPlayers);
   };
 
@@ -130,8 +153,10 @@ const PlayerSelection: React.FC<PlayerSelectionProps> = ({
       filteredPlayers.length, 
       10 - selectedPlayers.length
     ));
-    
-    const newPlayers = [...selectedPlayers, ...playersToAdd];
+
+    const existingPlayers = availablePlayers.filter(p => playersToAdd.includes(p.name));
+
+    const newPlayers = [...selectedPlayers, ...existingPlayers];
     onPlayersChange(newPlayers);
     setSearchTerm('');
   };
@@ -249,9 +274,9 @@ const PlayerSelection: React.FC<PlayerSelectionProps> = ({
 
         {selectedPlayers.length > 0 ? (
           <List dense>
-            {selectedPlayers.map((playerName, index) => (
+            {selectedPlayers.map((player, index) => (
               <ListItem
-                key={playerName}
+                key={player.name}
                 sx={{
                   bgcolor: index % 2 === 0 ? 'grey.50' : 'transparent',
                   borderRadius: 1
@@ -267,7 +292,7 @@ const PlayerSelection: React.FC<PlayerSelectionProps> = ({
                         variant="outlined"
                         sx={{ mr: 2, minWidth: 40 }}
                       />
-                      <Typography variant="body1">{playerName}</Typography>
+                      <Typography variant="body1">{player.name}</Typography>
                     </Box>
                   }
                 />
@@ -275,7 +300,7 @@ const PlayerSelection: React.FC<PlayerSelectionProps> = ({
                   <IconButton
                     edge="end"
                     aria-label="verwijder speler"
-                    onClick={() => handleRemovePlayer(playerName)}
+                    onClick={() => handleRemovePlayer(player.name)}
                     size="small"
                   >
                     <DeleteIcon />
